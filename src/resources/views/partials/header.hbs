@@ -1,0 +1,22 @@
+{{#if noBanner}}
+<header class="ex-header bg-gray">
+    <div class="container mx-auto px-4 sm:px-8 xl:max-w-6xl xl:px-4">
+        <h1 class="xl:ml-24">{{title}}</h1>
+    </div>
+</header>
+{{else}}
+<header id="header" class="header py-28 text-center md:pt-36 lg:text-left xl:pt-44 xl:pb-32">
+    <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
+        <div class="mb-16 lg:mt-32 xl:mt-40 xl:mr-12">
+            <h1 class="h1-large mb-5">Team management mobile application</h1>
+            <p class="p-large mb-8">Start getting things done together with your team based on Pavo's revolutionary team
+                management features</p>
+            <a class="btn-solid-lg" href="#your-link"><i class="fab fa-apple"></i>Download</a>
+            <a class="btn-solid-lg secondary" href="#your-link"><i class="fab fa-google-play"></i>Download</a>
+        </div>
+        <div class="xl:text-right">
+            <img class="inline" src="./images/header-banner.png" alt="alternative" />
+        </div>
+    </div>
+</header>
+{{/if}}

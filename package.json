@@ -1,0 +1,26 @@
+{
+  "name": "comp1640-2024",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "css": "npx tailwindcss -i ./src/resources/public/css/app.css -o ./src/resources/public/css/index.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.3",
+    "express-handlebars": "^7.1.2",
+    "handlebars-helpers": "^0.10.0",
+    "mongodb": "^6.4.0",
+    "nodemon": "^3.1.0",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
