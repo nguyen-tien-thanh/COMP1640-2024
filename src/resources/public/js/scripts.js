@@ -138,7 +138,7 @@
   function getMenuItems() {
     var menuItems = [];
     $(".nav-link").each(function () {
-      var hash = $(this).attr("href").substr(1);
+      var hash = $(this).attr("href");
       if (hash !== "") menuItems.push(hash);
     });
     return menuItems;
@@ -146,7 +146,7 @@
 
   /* Prevents adding of # at the end of URL on click of non-pagescroll links */
   $(".nav-link").click(function (e) {
-    var hash = $(this).attr("href").substr(1);
+    var hash = $(this).attr("href");
     if (hash == "") e.preventDefault();
   });
 

@@ -1,23 +1,13 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const mongoose = require("mongoose");
 
-async function connectToMongoDB() {
-  const uri = process.env.MONGODB_URI;
-
-  const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    },
-  });
-
-  try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
-    console.log("Connected to MongoDB!");
-  } finally {
-    await client.close();
-  }
+async function connect() {
+  mongoose.set("strictQuery", true);
+  mongoose.connect(process.env.MONGODB_URI, {});
+  mongoose.connection
+    .once("open", () => console.log("Database has been connected !!!"))
+    .on("error", (error) => {
+      console.log("Can not connect to Database !!!", error);
+    });
 }
 
-module.exports = connectToMongoDB;
+module.exports = { connect };

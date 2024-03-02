@@ -1,9 +1,10 @@
 {{#if noBanner}}
-<header class="ex-header bg-gray">
+<header class="ex-header bg-gray pt-32 pb-16">
     <div class="container mx-auto px-4 sm:px-8 xl:max-w-6xl xl:px-4">
         <h1 class="xl:ml-24">{{title}}</h1>
     </div>
 </header>
+{{else if noHeader}}
 {{else}}
 <header id="header" class="header py-28 text-center md:pt-36 lg:text-left xl:pt-44 xl:pb-32">
     <div class="container px-4 sm:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
