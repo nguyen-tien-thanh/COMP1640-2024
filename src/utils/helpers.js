@@ -1,5 +1,68 @@
 module.exports = {
-  formatDate: function formatDate(dateString) {
+  count: function (arr) {
+    return arr.length + 1;
+  },
+  isImage: function (fileName) {
+    const imageExtensions = [".jpg", ".jpeg", ".png", ".gif"];
+    const extension = fileName
+      .substring(fileName.lastIndexOf("."))
+      .toLowerCase();
+    return imageExtensions.includes(extension);
+  },
+  isDocument: function (fileName) {
+    const documentExtensions = [".doc", ".docx"];
+    const extension = fileName
+      .substring(fileName.lastIndexOf("."))
+      .toLowerCase();
+    return documentExtensions.includes(extension);
+  },
+  checkExpired: function (targetDate) {
+    const targetTime = new Date(targetDate).getTime();
+
+    const currentTime = new Date().getTime();
+
+    const remainingTime = targetTime - currentTime;
+
+    if (remainingTime <= 0) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  calculateRemainingTime: function (targetDate) {
+    const targetTime = new Date(targetDate).getTime();
+
+    const currentTime = new Date().getTime();
+
+    const remainingTime = targetTime - currentTime;
+
+    if (remainingTime <= 0) {
+      return "Expired";
+    }
+
+    const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const minutes = Math.floor(
+      (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+    let formattedString = "";
+    if (days > 0) {
+      formattedString += days + " days ";
+    }
+    if (hours > 0) {
+      formattedString += hours + " hours ";
+    }
+    if (minutes > 0) {
+      formattedString += minutes + " minutes ";
+    }
+
+    return formattedString + "left";
+  },
+  formatDateTime: function formatDate(dateString, option) {
     const date = new Date(dateString);
 
     const options = {
@@ -17,7 +80,11 @@ module.exports = {
 
     const formattedTime = date.toLocaleTimeString("en-US", timeOptions);
 
-    return `${formattedDate} - ${formattedTime}`;
+    if (option === "date") {
+      return formattedDate;
+    } else if (option === "time") {
+      return formattedTime;
+    } else return `${formattedDate} - ${formattedTime}`;
   },
   ifeq: function (a, b, options) {
     if (a == b) {

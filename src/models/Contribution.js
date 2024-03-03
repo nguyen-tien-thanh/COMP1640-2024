@@ -3,11 +3,11 @@ const mongooseDelete = require("mongoose-delete");
 
 const Contribution = new mongoose.Schema(
   {
-    magazine_id: { type: mongoose.Schema.Types.ObjectId, ref: "Magazine" },
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    title: { type: String, maxLength: 255 },
-    content: { type: String, maxLength: 255 },
+    faculty: { type: mongoose.Schema.Types.ObjectId, ref: "Faculty" },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    content: { type: String, maxLength: 255, required: true },
     files: [{ type: String }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   },
   {
     timestamps: true,

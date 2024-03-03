@@ -14,7 +14,7 @@ const User = new mongoose.Schema(
     password: { type: String, required: true },
     address: { type: String, maxLength: 255, default: null },
     gender: { type: Number, default: 2 },
-    avatar: { type: String, default: null },
+    avatar: { type: String, default: "avatar-default.jpg" },
     phone: { type: String, maxLength: 12, default: null },
     birthday: { type: Date, default: null },
   },

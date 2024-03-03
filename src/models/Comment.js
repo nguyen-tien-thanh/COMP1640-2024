@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
+const mongooseDelete = require("mongoose-delete");
 
-const Comment = moongose.Schema(
+const Comment = new mongoose.Schema(
   {
-    contribution_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Contribution",
-    },
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    title: { type: String, maxLength: 255, required: true },
+    // contribution: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Contribution",
+    // },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     content: { type: String, maxLength: 255, required: true },
   },
   {

@@ -1,7 +1,8 @@
 const { jsonToObject } = require("../utils/jsonToObject");
 const homeRoutes = require("./homeRoutes");
-const magazineRoutes = require("./magazineRoutes");
+const contributionRoutes = require("./contributionRoutes");
 const facultyRoutes = require("./facultyRoutes");
+const commentRoutes = require("./commentRoutes");
 
 function route(app) {
   app.use((req, res, next) => {
@@ -13,8 +14,9 @@ function route(app) {
     next();
   });
 
+  app.use("/comment", commentRoutes);
   app.use("/faculty", facultyRoutes);
-  app.use("/magazine", magazineRoutes);
+  app.use("/contribution", contributionRoutes);
   app.use("/", homeRoutes);
 }
 
