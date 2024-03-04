@@ -3,7 +3,8 @@ const mongooseDelete = require("mongoose-delete");
 
 const Faculty = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    coordinator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     name: { type: String, maxLength: 255, required: true },
     image: { type: String, default: null },
     description: { type: String, maxLength: 255 },
@@ -19,6 +20,7 @@ Faculty.plugin(mongooseDelete, {
   deletedAt: true,
 });
 
+// TODO
 Faculty.pre("save", async function (next) {
   try {
     const roleId = "65e21288729a968a44048cbb"; // Marketing Coordinator

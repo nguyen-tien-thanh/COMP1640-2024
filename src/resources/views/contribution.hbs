@@ -7,18 +7,18 @@
     <input type="time" name="time">
     <button type="submit">Submit</button>
 </form> -->
-<main class="pt-8 pb-16 dark:bg-gray-900 antialiased">
+<main class="pt-8 pb-4 dark:bg-gray-900 antialiased">
     <div class="flex justify-between container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
         <article class="w-full max-w-full format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
             <header class="mb-4 lg:mb-6 not-format">
                 <address class="flex items-center mb-6 not-italic">
                     <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
-                        <img class="mr-4 w-16 h-16 rounded-full" src="/uploads/{{faculty.user.avatar}}"
-                            alt="{{faculty.user.name}}">
+                        <img class="mr-4 w-16 h-16 rounded-full" src="/uploads/{{faculty.coordinator.avatar}}"
+                            alt="{{faculty.coordinator.name}}">
                         <div>
-                            <a href="/profile/{{faculty.user._id}}" rel="author"
-                                class="text-xl font-bold text-gray-900 dark:text-white">{{faculty.user.name}}</a>
-                            <p class="text-base text-gray-500 dark:text-gray-400">{{faculty.user.role.name}}
+                            <a href="/profile/{{faculty.coordinator._id}}" rel="author"
+                                class="text-xl font-bold text-gray-900 dark:text-white">{{faculty.coordinator.name}}</a>
+                            <p class="text-base text-gray-500 dark:text-gray-400">{{faculty.coordinator.role.name}}
                             </p>
                             <p class="text-base text-gray-500 dark:text-gray-400"><time pubdate
                                     title="{{formatDateTime faculty.createdAt 'date'}}">{{formatDateTime
@@ -86,23 +86,27 @@
                 </form>
                 {{/ifeq}}
 
-                {{#each contributions}}
+                {{#contributions}}
                 <article class="py-6 text-base bg-white rounded-lg dark:bg-gray-900">
-                    <footer class="flex justify-between items-center mb-2">
+                    <div class="flex justify-between items-center mb-2">
                         <div class="flex items-center">
                             <p
                                 class="inline-flex items-center mr-3 font-semibold text-sm text-gray-900 dark:text-white">
-                                <img class="mr-2 w-6 h-6 rounded-full" src="/uploads/{{this.user.avatar}}"
-                                    alt="{{this.user.name}}">{{this.user.name}}
+                                <img class="mr-2 w-6 h-6 rounded-full" src="/uploads/{{user.avatar}}"
+                                    alt="{{user.name}}">{{user.name}}
                             </p>
                             <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate title="{{formatDateTime
-                                        this.createdAt 'date'}}">{{formatDateTime
-                                    this.createdAt}}</time></p>
+                                        createdAt 'date'}}">{{formatDateTime
+                                    createdAt}}</time></p>
+                            {{#ifeq isPublished true}}
+                            <span
+                                class="mx-2 bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Published</span>
+                            {{/ifeq}}
                         </div>
 
-                        {{#ifeq ../canContribute true}}
+                        {{#ifeq (canEditComment ../canContribute ../user._id user._id ../user.role.name) true}}
                         <div class="relative">
-                            <button onClick="toggleDropdownMenu('{{this._id}}')"
+                            <button onClick="toggleDropdownMenu('{{_id}}')"
                                 class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                                 type="button">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +117,7 @@
                                 <span class="sr-only">Comment settings</span>
                             </button>
                             <!-- Dropdown menu -->
-                            <div id="dropdown-{{this._id}}"
+                            <div id="dropdown-{{_id}}"
                                 class="hidden absolute right-0 z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                     aria-labelledby="dropdownMenuIconHorizontalButton">
@@ -121,19 +125,33 @@
                                         <a href="#"
                                             class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
                                     </li>
+                                    {{#ifeq ../user.role.name 'Student'}}
                                     <li>
-                                        <a href="/contribution/delete/{{this._id}}"
+                                        <a href="/contribution/delete/{{_id}}"
                                             class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove
                                             to trash</a>
                                     </li>
+                                    {{/ifeq}}
+                                    {{#ifeq ../user.role.name 'Marketing Coordinator'}}
+                                    <li>
+                                        {{#ifeq isPublished false}}
+                                        <a href="/contribution/public/{{_id}}"
+                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Public</a>
+                                        {{else}}
+                                        <a href="/contribution/unPublic/{{_id}}"
+                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Cancel
+                                            public</a>
+                                        {{/ifeq}}
+                                    </li>
+                                    {{/ifeq}}
                                 </ul>
                             </div>
                         </div>
                         {{/ifeq}}
-                    </footer>
-                    <p>{{this.content}}</p>
+                    </div>
+                    <p>{{content}}</p>
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                        {{#each files}}
+                        {{#files}}
                         {{#if (isImage this)}}
                         <div
                             class="flex items-center justify-center border border-gray-200 bg-white rounded-lg shadow hover:scale-125 duration-300">
@@ -148,11 +166,11 @@
                                 class="text-blue-500 mt-2 overflow-hidden overflow-ellipsis whitespace-nowrap max-w-full text-sm">{{this}}</span>
                         </div>
                         {{/if}}
-                        {{/each}}
+                        {{/files}}
 
                     </div>
 
-                    <div class="flex items-center mt-4 space-x-4" onClick="toggleComment('{{this._id}}')">
+                    <div class="flex items-center mt-4 space-x-4" onClick="toggleComment('{{_id}}')">
                         <button type="button"
                             class="flex items-center font-medium text-sm text-gray-500 hover:underline dark:text-gray-400">
                             <svg class="mr-1.5 w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -160,13 +178,13 @@
                                 <path
                                     d="M18 0H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.707.707L10.414 13H18a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5 4h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5 4h5a1 1 0 1 1 0 2H5a1 1 0 0 1 0-2Zm2 5H5a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Zm9 0h-6a1 1 0 0 1 0-2h6a1 1 0 1 1 0 2Z" />
                             </svg>
-                            Comment ({{count ../contributions}})
+                            Comment ({{count comments}})
                         </button>
                     </div>
 
-                    <div id="reply-{{this._id}}" class="hidden">
+                    <div id="reply-{{_id}}" class="hidden">
                         {{#ifeq ../canContribute true}}
-                        <form class="pt-4" action="/comment/store/{{this._id}}" method="POST">
+                        <form class="pt-4" action="/comment/store/{{_id}}" method="POST">
                             <div
                                 class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                                 <label for="comment" class="sr-only">Your comment</label>
@@ -193,179 +211,42 @@
                                             title="{{formatDateTime createdAt 'date'}}">{{formatDateTime createdAt
                                             }}</time></p>
                                 </div>
-                                <button id="dropdownComment2Button" data-dropdown-toggle="dropdownComment2"
-                                    class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                                    type="button">
-                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor" viewBox="0 0 16 3">
-                                        <path
-                                            d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                                    </svg>
-                                    <span class="sr-only">Comment settings</span>
-                                </button>
-                                <!-- Dropdown menu -->
-                                <div id="dropdownComment2"
-                                    class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                        aria-labelledby="dropdownMenuIconHorizontalButton">
-                                        <li>
-                                            <a href="#"
-                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </footer>
                             <p>{{content}}</p>
                         </article>
                         {{/comments}}
                     </div>
                 </article>
-                {{/each}}
-                <!-- <article
-                    class="py-6 mb-6 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-                    <footer class="flex justify-between items-center mb-2">
-                        <div class="flex items-center">
-                            <p
-                                class="inline-flex items-center mr-3 font-semibold text-sm text-gray-900 dark:text-white">
-                                <img class="mr-2 w-6 h-6 rounded-full"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-                                    alt="Bonnie Green">Bonnie Green
-                            </p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate datetime="2022-03-12"
-                                    title="March 12th, 2022">Mar. 12, 2022</time></p>
-                        </div>
-                        <button id="dropdownComment3Button" data-dropdown-toggle="dropdownComment3"
-                            class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                            type="button">
-                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" viewBox="0 0 16 3">
-                                <path
-                                    d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                            </svg>
-                            <span class="sr-only">Comment settings</span>
-                        </button>
-                        <div id="dropdownComment3"
-                            class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownMenuIconHorizontalButton">
-                                <li>
-                                    <a href="#"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </footer>
-                    <p>The article covers the essentials, challenges, myths and stages the UX designer should consider
-                        while creating the design strategy.</p>
-                    <div class="flex items-center mt-4 space-x-4">
-                        <button type="button"
-                            class="flex items-center font-medium text-sm text-gray-500 hover:underline dark:text-gray-400">
-                            <svg class="mr-1.5 w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" viewBox="0 0 20 18">
-                                <path
-                                    d="M18 0H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.707.707L10.414 13H18a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5 4h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5 4h5a1 1 0 1 1 0 2H5a1 1 0 0 1 0-2Zm2 5H5a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Zm9 0h-6a1 1 0 0 1 0-2h6a1 1 0 1 1 0 2Z" />
-                            </svg>
-                            Reply
-                        </button>
-                    </div>
-                </article>
-                <article class="py-6 text-base bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-900">
-                    <footer class="flex justify-between items-center mb-2">
-                        <div class="flex items-center">
-                            <p
-                                class="inline-flex items-center mr-3 font-semibold text-sm text-gray-900 dark:text-white">
-                                <img class="mr-2 w-6 h-6 rounded-full"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-4.jpg"
-                                    alt="Helene Engels">Helene Engels
-                            </p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate datetime="2022-06-23"
-                                    title="June 23rd, 2022">Jun. 23, 2022</time></p>
-                        </div>
-                        <button id="dropdownComment4Button" data-dropdown-toggle="dropdownComment4"
-                            class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:text-gray-400 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                            type="button">
-                            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" viewBox="0 0 16 3">
-                                <path
-                                    d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-                            </svg>
-                        </button>
-                        <div id="dropdownComment4"
-                            class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                aria-labelledby="dropdownMenuIconHorizontalButton">
-                                <li>
-                                    <a href="#"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </footer>
-                    <p>Thanks for sharing this. I do came from the Backend development and explored some of the tools to
-                        design my Side Projects.</p>
-                    <div class="flex items-center mt-4 space-x-4">
-                        <button type="button"
-                            class="flex items-center font-medium text-sm text-gray-500 hover:underline dark:text-gray-400">
-                            <svg class="mr-1.5 w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor" viewBox="0 0 20 18">
-                                <path
-                                    d="M18 0H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.707.707L10.414 13H18a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5 4h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5 4h5a1 1 0 1 1 0 2H5a1 1 0 0 1 0-2Zm2 5H5a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Zm9 0h-6a1 1 0 0 1 0-2h6a1 1 0 1 1 0 2Z" />
-                            </svg>
-                            Reply
-                        </button>
-                    </div>
-                </article> -->
+                {{/contributions}}
             </section>
         </article>
     </div>
 </main>
 
-<aside aria-label="Related articles" class="py-8 lg:py-24 bg-gray-50 dark:bg-gray-800">
-    <div class="px-4 mx-auto max-w-screen-xl">
+{{!-- {{#ifNotEq (count (canSeeFaculties faculties user)) 0}} --}}
+<aside aria-label="Related articles" class="py-8 lg:py-24 dark:bg-gray-800">
+    <div class="container px-4 mx-auto max-w-screen-xl sm:px-8 xl:max-w-5xl xl:px-12">
         <h2 class="mb-8 text-2xl font-bold text-gray-900 dark:text-white">Another faculties</h2>
-        <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-            {{#each faculties}}
+        <div class="grid gap-12 grid-cols-1 lg:grid-cols-3">
+            {{#eachUpTo (canSeeFaculties faculties user) 3}}
             <article class="max-w-xs">
-                <a href="/contribution?facultyId={{this._id}}">
-                    <img src="{{this.image}}" class="mb-5 rounded-lg" alt="Image 1">
+                <a href="/contribution?facultyId={{_id}}">
+                    <img src="{{image}}" class="mb-5 rounded-lg" alt="Image 1">
                 </a>
                 <h2 class="mb-2 text-xl font-bold leading-tight text-gray-900 dark:text-white">
-                    <a href="/contribution?facultyId={{this._id}}">{{this.name}}</a>
+                    <a href="/contribution?facultyId={{_id}}">{{name}}</a>
                 </h2>
-                <p class="mb-4 text-gray-500 dark:text-gray-400">By <a href="/profile/{{this.user._id}}"
-                        class="hover:underline">{{this.user.name}}</a></p>
-                <a href="/contribution?facultyId={{this._id}}"
+                <p class="mb-4 text-gray-500 dark:text-gray-400">By <a href="/profile/{{coordinator._id}}"
+                        class="hover:underline">{{coordinator.name}}</a></p>
+                <a href="/contribution?facultyId={{_id}}"
                     class="inline-flex items-center font-medium underline underline-offset-4 text-primary-600 dark:text-primary-500 hover:no-underline">
                     More detail
                 </a>
             </article>
-            {{/each}}
+            {{/eachUpTo}}
         </div>
     </div>
 </aside>
+{{!-- {{/ifNotEq}} --}}
 
 <script src="/js/contribution.js"></script>

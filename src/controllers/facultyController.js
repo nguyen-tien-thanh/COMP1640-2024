@@ -6,7 +6,8 @@ class FacultyController {
     try {
       Faculty.find({})
         .sort()
-        .populate("user")
+        .populate("users")
+        .populate("coordinator")
         .then((fal) => {
           return res.render("faculty", {
             noBanner: true,

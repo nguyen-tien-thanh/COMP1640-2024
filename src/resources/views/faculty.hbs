@@ -1,23 +1,30 @@
-<div aria-label="Faculties" class="py-8 lg:py-12 dark:bg-gray-800">
-    <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
-        <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
-            {{#each faculties}}
-            <article class="max-w-xs">
-                <a href="/contribution?facultyId={{this._id}}">
-                    <img src="{{this.image}}" class="mb-5 rounded-lg" alt="Image 1">
-                </a>
-                <h2 class="mb-2 text-xl font-bold leading-tight text-gray-900 dark:text-white">
-                    <a href="/contribution?facultyId={{this._id}}">{{this.name}}</a>
-                </h2>
-                <p class="text-gray-500 dark:text-gray-400">By <a href="/profile/{{this.user._id}}"
-                        class="underline-offset-4 hover:underline">{{this.user.name}}</a></p>
-                {{#if this.description}}<p>{{this.description}}</p>{{/if}}
-                <a href="/contribution?facultyId={{this._id}}"
-                    class="mt-4 inline-flex items-center font-medium underline underline-offset-4 text-primary-600 dark:text-primary-500 hover:no-underline">
-                    More details
-                </a>
-            </article>
-            {{/each}}
-        </div>
+<div aria-label="Faculties" class="min-h-[70vh] py-8 lg:py-12 dark:bg-gray-800">
+  <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+    <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+      {{#each (canSeeFaculties faculties user)}}
+        <article class="max-w-xs">
+          <a href="/contribution?facultyId={{this._id}}">
+            <img src="{{this.image}}" class="mb-5 rounded-lg" alt="Image 1" />
+          </a>
+          <h2
+            class="mb-2 text-xl font-bold leading-tight text-gray-900 dark:text-white"
+          >
+            <a href="/contribution?facultyId={{this._id}}">{{this.name}}</a>
+          </h2>
+          <p class="text-gray-500 dark:text-gray-400">By
+            <a
+              href="/profile/{{this.coordinator._id}}"
+              class="underline-offset-4 hover:underline"
+            >{{this.coordinator.name}}</a></p>
+          {{#if this.description}}<p>{{this.description}}</p>{{/if}}
+          <a
+            href="/contribution?facultyId={{this._id}}"
+            class="mt-4 inline-flex items-center font-medium underline underline-offset-4 text-primary-600 dark:text-primary-500 hover:no-underline"
+          >
+            More details
+          </a>
+        </article>
+      {{/each}}
     </div>
+  </div>
 </div>

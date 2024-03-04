@@ -41,9 +41,11 @@
                         <a class="nav-link {{#ifeq title 'Publication'}}active{{/ifeq}}"
                             href="/publication">Publication</a>
                     </li>
+                    {{#if user}}
                     <li>
                         <a class="nav-link {{#ifeq title 'Faculty'}}active{{/ifeq}}" href="/faculty">Faculty</a>
                     </li>
+                    {{/if}}
                     {{#ifeq user.role.name "Administrator"}}<li>
                         <a class="nav-link {{#ifeq title 'Management'}}active{{/ifeq}}"
                             href="/management">Management</a>
@@ -53,7 +55,7 @@
                     <li>
                         <a class="nav-link {{#ifeq title 'Profile'}}active{{/ifeq}}" href="/profile">{{user.name}}</a>
                     </li>
-                    <li class="flex justify-center items-center">
+                    <li class="flex lg:justify-center items-center">
                         <a class="px-2 no-underline" href="/logout">
                             <i
                                 class="fa fa-sign-out text-indigo-600 hover:text-pink-500 text-xl transition-all duration-200 mr-1.5"></i>

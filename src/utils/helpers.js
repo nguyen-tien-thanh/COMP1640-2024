@@ -1,6 +1,31 @@
 module.exports = {
+  eachUpTo: function (array, count, options) {
+    var result = "";
+    for (var i = 0; i < count && i < array.length; i++) {
+      result += options.fn(array[i]);
+    }
+    return result;
+  },
+  canEditComment: function (canContribute, userId, ownerId, roleName) {
+    if (
+      canContribute &&
+      (userId.equals(ownerId) || roleName === "Marketing Coordinator")
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  canSeeFaculties: function (faculties, currentUser) {
+    const result = faculties.filter((fal) => {
+      return fal.users.some((u) => {
+        return u._id.equals(currentUser._id);
+      });
+    });
+    return result;
+  },
   count: function (arr) {
-    return arr.length + 1;
+    return arr.length;
   },
   isImage: function (fileName) {
     const imageExtensions = [".jpg", ".jpeg", ".png", ".gif"];
@@ -88,6 +113,13 @@ module.exports = {
   },
   ifeq: function (a, b, options) {
     if (a == b) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+  },
+  ifNotEq: function (a, b, options) {
+    if (a != b) {
       return options.fn(this);
     } else {
       return options.inverse(this);

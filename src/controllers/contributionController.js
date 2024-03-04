@@ -1,11 +1,34 @@
 const fs = require("fs");
 
 const Faculty = require("../models/Faculty");
-const Comment = require("../models/Comment");
 const Contribution = require("../models/Contribution");
 const { multipleJsonToObject, jsonToObject } = require("../utils/jsonToObject");
 
 class ContributionController {
+  async public(req, res, next) {
+    try {
+      await Contribution.updateOne(
+        { _id: req.params.id },
+        { isPublished: true }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+    return res.redirect("back");
+  }
+
+  async unPublic(req, res, next) {
+    try {
+      await Contribution.updateOne(
+        { _id: req.params.id },
+        { isPublished: false }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+    return res.redirect("back");
+  }
+
   async delete(req, res, next) {
     try {
       await Contribution.delete({ _id: req.params.id });
@@ -31,8 +54,7 @@ class ContributionController {
         fs.unlink(filePath, (err) => {
           if (err) {
             console.error(`Error deleting file ${fileName}:`, err);
-          } else {
-            console.log(`File ${fileName} deleted successfully`);
+            req.flash("error", `Error deleting file ${fileName}`);
           }
         });
       });
@@ -53,22 +75,34 @@ class ContributionController {
 
     Promise.all([
       Faculty.find()
-        .limit(4)
         .populate({
-          path: "user",
+          path: "users",
           select: "name avatar",
           populate: {
             path: "role",
           },
+        })
+        .populate({
+          path: "coordinator",
+          select: "name avatar",
+          populate: {
+            path: "role",
+            select: "name",
+          },
         }),
-      Faculty.findOne({ _id: facultyId }).populate({
-        path: "user",
-        select: "name avatar",
-        populate: {
-          path: "role",
-          select: "name",
-        },
-      }),
+      Faculty.findOne({ _id: facultyId })
+        .populate({
+          path: "users",
+          select: "name avatar",
+        })
+        .populate({
+          path: "coordinator",
+          select: "name avatar",
+          populate: {
+            path: "role",
+            select: "name",
+          },
+        }),
       Contribution.find({ faculty: facultyId })
         .sort({ createdAt: -1 })
         .populate({
@@ -84,22 +118,25 @@ class ContributionController {
         }),
     ]).then(([facs, fac, cons]) => {
       var canContribute = false;
+      var filterFacs = facs.filter((f) => {
+        return !f._id.equals(fac._id);
+      });
 
       if (
         req.user &&
-        (req.user.role.name === "Student" || req.user._id.equals(fac.user._id))
+        (req.user.role.name === "Student" ||
+          req.user.role.name === "Marketing Coordinator") &&
+        fac.users.some((user) => user._id.equals(req.user._id))
       ) {
         canContribute = true;
       }
-
-      console.log(canContribute);
 
       return res.render("contribution", {
         title: fac.name,
         noBanner: true,
         canContribute,
         isExpired: fac.closureDate - new Date() < 0,
-        faculties: multipleJsonToObject(facs),
+        faculties: multipleJsonToObject(filterFacs),
         contributions: multipleJsonToObject(cons),
         faculty: jsonToObject(fac),
       });
