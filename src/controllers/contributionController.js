@@ -68,11 +68,25 @@ class ContributionController {
     }
   }
 
-  index(req, res, next) {
+  async index(req, res, next) {
     const facultyId = req.query.facultyId;
 
     if (facultyId === undefined || facultyId === null) {
       return res.redirect("/faculty");
+    }
+
+    const checkAuthority =
+      req.user.role.name === "Administrator"
+        ? true
+        : await Faculty.findOne({
+            $and: [{ _id: facultyId }, { users: { $in: [req.user._id] } }],
+          });
+    if (!checkAuthority) {
+      return res.render("error", {
+        noHeader: true,
+        statusCode: 409,
+        message: "You are not allowed",
+      });
     }
 
     Promise.all([
@@ -120,9 +134,11 @@ class ContributionController {
         }),
     ]).then(([facs, fac, cons]) => {
       var canContribute = false;
-      var filterFacs = facs.filter((f) => {
-        return !f._id.equals(fac._id);
-      });
+      var filterFacs = facs
+        .sort(() => Math.random() - 0.5)
+        .filter((f) => {
+          return !f._id.equals(fac._id);
+        });
 
       if (
         req.user &&
@@ -150,7 +166,7 @@ class ContributionController {
     const currentFaculty = await Faculty.findOne({ _id: req.query.facultyId });
     if (
       currentFaculty.coordinator.equals(req.user._id) &&
-      currentFaculty.closureDate - new Date() >= 14
+      currentFaculty.closureDate - new Date() <= 14
     ) {
       req.flash("error", "Expired closure date");
       return res.redirect("back");
@@ -189,6 +205,42 @@ class ContributionController {
     }
 
     return res.redirect("back");
+  }
+
+  async update(req, res, next) {
+    const conId = req.params.id;
+    const { deletedFiles, content } = req.body;
+
+    try {
+      const con = await Contribution.findOne({ _id: conId });
+      var newFiles = con.files.filter((f) => {
+        return !deletedFiles.includes(f);
+      });
+
+      await deletedFiles.forEach((fileName) => {
+        const filePath = "src/resources/public/uploads/" + fileName;
+
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.error(`Error deleting file ${fileName}:`, err);
+            req.flash("error", `Error deleting file ${fileName}`);
+          }
+        });
+      });
+
+      await Contribution.updateOne(
+        { _id: conId },
+        {
+          files: newFiles,
+          content: content,
+        }
+      );
+
+      return res.status(200).send({ message: "Update successfully" });
+    } catch (err) {
+      console.error(`Error updating: `, err);
+      return res.status(404).send({ message: "Update failed" });
+    }
   }
 }
 

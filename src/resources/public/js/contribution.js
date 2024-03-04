@@ -17,3 +17,57 @@ function downloadDocument(fileName) {
   downloadLink.click();
   document.body.removeChild(downloadLink);
 }
+
+function editContribution(id) {
+  const contentElement = document.querySelector(`#content-${id}`);
+  contentElement.contentEditable = true;
+  contentElement.focus();
+  toggleDropdownMenu(id);
+
+  const btnSubmit = document.querySelector(`#btnSubmit-${id}`);
+  btnSubmit.style.display = "block";
+
+  const btnX = document.querySelectorAll(`.btnX-${id}`);
+  btnX.forEach((btn) => (btn.style.display = "block"));
+}
+
+function removeFile(fileName) {
+  const file = document.getElementById(fileName);
+  file.style.display = "none";
+  deletedFiles.push(fileName);
+}
+
+var deletedFiles = [];
+
+function submitUpdate(id) {
+  const content = document.querySelector(`#content-${id}`).innerText;
+  const contentElement = document.querySelector(`#content-${id}`);
+  const btnSubmit = document.querySelector(`#btnSubmit-${id}`);
+  const btnX = document.querySelectorAll(`.btnX-${id}`);
+
+  const requestBody = {
+    deletedFiles,
+    content,
+  };
+
+  fetch(`/contribution/update/${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log(btnX, btnSubmit, contentElement);
+        btnX.forEach((btn) => (btn.style.display = "none"));
+        btnSubmit.style.display = "none";
+        contentElement.contentEditable = false;
+      } else {
+        console.log("Failed to submit update");
+      }
+    })
+    .catch((error) => {
+      console.log("Error submitting update:", error);
+    });
+}

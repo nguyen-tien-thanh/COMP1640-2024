@@ -20,21 +20,4 @@ Faculty.plugin(mongooseDelete, {
   deletedAt: true,
 });
 
-// TODO
-Faculty.pre("save", async function (next) {
-  try {
-    const roleId = "65e21288729a968a44048cbb"; // Marketing Coordinator
-
-    // Check if the user has the required role
-    const user = await this.model("User").findOne({ _id: this.user });
-    if (!user || user.role != roleId) {
-      return next(new Error("User should be Marketing Coordinator"));
-    }
-
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-
 module.exports = mongoose.model("Faculty", Faculty);

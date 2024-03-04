@@ -1,4 +1,11 @@
 module.exports = {
+  ifNotEqDate: function (date1, date2, options) {
+    if (new Date(date1).getTime() !== new Date(date2).getTime()) {
+      return options.fn(this);
+    } else {
+      return options.inverse(this);
+    }
+  },
   canCommentExpired: function (closureDate, role) {
     console.log(closureDate, role);
     let timeLeft = new Date(closureDate) - new Date();
@@ -9,7 +16,6 @@ module.exports = {
         return true;
       }
     }
-    console.log(timeLeft);
     return timeLeft > 0;
   },
   eachUpTo: function (array, count, options) {
@@ -30,6 +36,9 @@ module.exports = {
     }
   },
   canSeeFaculties: function (faculties, currentUser) {
+    if (currentUser && currentUser.role.name === "Administrator") {
+      return faculties;
+    }
     const result = faculties.filter((fal) => {
       return fal.users.some((u) => {
         return u._id.equals(currentUser._id);

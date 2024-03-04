@@ -5,6 +5,7 @@ const ContributionController = require("../controllers/contributionController");
 const { handleFileUpload } = require("../middlewares/updateMulter");
 const checkLogin = require("../middlewares/checkLogin");
 
+router.post("/update/:id", ContributionController.update);
 router.get("/unPublic/:id", ContributionController.unPublic);
 router.get("/public/:id", ContributionController.public);
 router.use("/force/:id", ContributionController.force);
