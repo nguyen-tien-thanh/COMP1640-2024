@@ -137,7 +137,6 @@ class ContributionController {
         title: fac.name,
         noBanner: true,
         canContribute,
-        isExpired: fac.closureDate - new Date() < 0,
         faculties: multipleJsonToObject(filterFacs),
         contributions: multipleJsonToObject(cons),
         faculty: jsonToObject(fac),
@@ -146,10 +145,23 @@ class ContributionController {
   }
 
   async store(req, res, next) {
-    const { content, files } = req.body;
+    const { content } = req.body;
+
+    const currentFaculty = await Faculty.findOne({ _id: req.query.facultyId });
+    if (
+      currentFaculty.coordinator.equals(req.user._id) &&
+      currentFaculty.closureDate - new Date() >= 14
+    ) {
+      req.flash("error", "Expired closure date");
+      return res.redirect("back");
+    } else if (currentFaculty.closureDate - new Date() <= 0) {
+      req.flash("error", "Expired closure date");
+      return res.redirect("back");
+    }
 
     if (!content) {
       req.flash("error", "Missing information");
+      return res.redirect("back");
     }
 
     const filesName = req.files.map((file) => file.filename);

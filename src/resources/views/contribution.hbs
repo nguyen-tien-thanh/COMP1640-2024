@@ -49,7 +49,7 @@
                 <div class="flex">
                     <p class="mb-2 leading-tight text-gray-900 lg:mb-4 dark:text-white">
                         <span class="text-red-300 font-semibold">{{calculateRemainingTime
-                            faculty.closureDate}}</span>
+                            faculty.closureDate user.role.name}}</span>
                     </p>
                 </div>
                 <form class="mb-6" action="/contribution/store?facultyId={{faculty._id}}" method="POST"
@@ -70,7 +70,7 @@
                         <div class="flex items-center h-5">
                             <input id="terms" aria-describedby="terms" type="checkbox"
                                 class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-sky-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-sky-600 dark:ring-offset-gray-800"
-                                required checked>
+                                required>
                         </div>
                         <div class="ml-3 text-sm">
                             <label for="terms" class="font-light text-gray-500 dark:text-gray-300">I accept the <a
@@ -79,8 +79,13 @@
                                     and Conditions</a></label>
                         </div>
                     </div>
-                    <button type="submit" {{#ifeq isExpired true}}disabled{{/ifeq}}
-                        class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white rounded-lg {{#ifeq isExpired true}}bg-[#6c757d] border-[#6c757d] cursor-not-allowed{{else}}bg-cyan-700 focus:ring-4 focus:ring-cyan-200 dark:focus:ring-cyan-900 hover:bg-cyan-800{{/ifeq}}">
+                    <button type="submit" {{#ifeq (canCommentExpired faculty.closureDate user.role.name)
+                        false}}disabled{{/ifeq}} class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white rounded-lg 
+                            {{#ifeq (canCommentExpired faculty.closureDate user.role.name) false}}
+                                bg-[#6c757d] border-[#6c757d] cursor-not-allowed
+                            {{else}}
+                                bg-cyan-700 focus:ring-4 focus:ring-cyan-200 dark:focus:ring-cyan-900 hover:bg-cyan-800
+                            {{/ifeq}}">
                         Post contribution
                     </button>
                 </form>
@@ -121,6 +126,7 @@
                                 class="hidden absolute right-0 z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                 <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                     aria-labelledby="dropdownMenuIconHorizontalButton">
+                                    <!-- TODO -->
                                     <li>
                                         <a href="#"
                                             class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
@@ -192,8 +198,9 @@
                                     class="px-0 w-full focus:outline-none text-sm text-gray-900 border-0 focus:ring-0 dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
                                     placeholder="Write a comment..." required></textarea>
                             </div>
-                            <button type="submit" {{#ifeq isExpired true}}disabled{{/ifeq}}
-                                class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white rounded-lg {{#ifeq isExpired true}}bg-[#6c757d] border-[#6c757d] cursor-not-allowed{{else}}bg-cyan-700 focus:ring-4 focus:ring-cyan-200 dark:focus:ring-cyan-900 hover:bg-cyan-800{{/ifeq}}">
+                            <button type="submit" {{#ifeq (canCommentExpired ../faculty.closureDate ../user.role.name)
+                                false}}disabled{{/ifeq}}
+                                class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white rounded-lg {{#ifeq (canCommentExpired ../faculty/closureDate ../user.role.name) false}}bg-[#6c757d] border-[#6c757d] cursor-not-allowed{{else}}bg-cyan-700 focus:ring-4 focus:ring-cyan-200 dark:focus:ring-cyan-900 hover:bg-cyan-800{{/ifeq}}">
                                 Post comment
                             </button>
                         </form>
@@ -223,7 +230,7 @@
     </div>
 </main>
 
-{{!-- {{#ifNotEq (count (canSeeFaculties faculties user)) 0}} --}}
+{{#ifNotEq (count (canSeeFaculties faculties user)) 0}}
 <aside aria-label="Related articles" class="py-8 lg:py-24 dark:bg-gray-800">
     <div class="container px-4 mx-auto max-w-screen-xl sm:px-8 xl:max-w-5xl xl:px-12">
         <h2 class="mb-8 text-2xl font-bold text-gray-900 dark:text-white">Another faculties</h2>
@@ -247,6 +254,6 @@
         </div>
     </div>
 </aside>
-{{!-- {{/ifNotEq}} --}}
+{{/ifNotEq}}
 
 <script src="/js/contribution.js"></script>

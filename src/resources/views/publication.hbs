@@ -1,0 +1,48 @@
+<div aria-label="{{title}}" class="py-8 lg:py-12 dark:bg-gray-800">
+    <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
+        <div>
+            {{#contributions}}
+            <article class="pb-8">
+                <address class="flex items-center not-italic">
+                    <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+                        <img class="mr-4 w-16 h-16 rounded-full" src="/uploads/{{user.avatar}}" alt="{{user.name}}">
+                        <div>
+                            <a href="/profile/{{user._id}}" rel="author"
+                                class="text-lg font-bold text-gray-900 dark:text-white">{{user.name}}</a>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{user.role.name}}
+                            </p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400"><time pubdate
+                                    title="{{formatDateTime faculty.createdAt 'date'}}">{{formatDateTime
+                                    createdAt}}</time></p>
+                        </div>
+                    </div>
+                </address>
+                <a href="/contribution?facultyId={{faculty._id}}"
+                    class="hover:bg-green-200 bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{faculty.name}}</a>
+
+                <p class="text-gray-500 dark:text-gray-400 py-2">
+                    {{content}}
+                </p>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    {{#files}}
+                    {{#if (isImage this)}}
+                    <div
+                        class="flex items-center justify-center border border-gray-200 bg-white rounded-lg shadow hover:scale-125 duration-300">
+                        <img src="/uploads/{{this}}" alt="Image File"
+                            class="w-auto h-[220px] object-cover rounded-lg" />
+                    </div>
+                    {{else if (isDocument this)}}
+                    <div class="flex flex-col items-center justify-center border border-gray-200 p-4 rounded-lg cursor-pointer shadow h-[220px]"
+                        onclick="downloadDocument('{{this}}')" title="{{this}}">
+                        <i class="fas fa-file-word text-8xl text-blue-500"></i>
+                        <span
+                            class="text-blue-500 mt-2 overflow-hidden overflow-ellipsis whitespace-nowrap max-w-full text-sm">{{this}}</span>
+                    </div>
+                    {{/if}}
+                    {{/files}}
+                </div>
+            </article>
+            {{/contributions}}
+        </div>
+    </div>
+</div>

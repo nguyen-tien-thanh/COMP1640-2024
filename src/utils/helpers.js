@@ -1,4 +1,17 @@
 module.exports = {
+  canCommentExpired: function (closureDate, role) {
+    console.log(closureDate, role);
+    let timeLeft = new Date(closureDate) - new Date();
+
+    if (role === "Marketing Coordinator") {
+      const fourteenDaysInMilliseconds = 14 * 24 * 60 * 60 * 1000;
+      if (timeLeft <= 0 && timeLeft > -fourteenDaysInMilliseconds) {
+        return true;
+      }
+    }
+    console.log(timeLeft);
+    return timeLeft > 0;
+  },
   eachUpTo: function (array, count, options) {
     var result = "";
     for (var i = 0; i < count && i < array.length; i++) {
@@ -54,12 +67,16 @@ module.exports = {
       return false;
     }
   },
-  calculateRemainingTime: function (targetDate) {
+  calculateRemainingTime: function (targetDate, role) {
     const targetTime = new Date(targetDate).getTime();
 
     const currentTime = new Date().getTime();
 
-    const remainingTime = targetTime - currentTime;
+    var remainingTime = targetTime - currentTime;
+
+    if (role === "Marketing Coordinator" && remainingTime <= 0) {
+      remainingTime += 14 * 24 * 60 * 60 * 1000;
+    }
 
     if (remainingTime <= 0) {
       return "Expired";
@@ -72,7 +89,6 @@ module.exports = {
     const minutes = Math.floor(
       (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
     );
-    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
     let formattedString = "";
     if (days > 0) {

@@ -3,6 +3,7 @@ const homeRoutes = require("./homeRoutes");
 const contributionRoutes = require("./contributionRoutes");
 const facultyRoutes = require("./facultyRoutes");
 const commentRoutes = require("./commentRoutes");
+const publicationRoutes = require("./publicationRoutes");
 
 function route(app) {
   app.use((req, res, next) => {
@@ -14,6 +15,7 @@ function route(app) {
     next();
   });
 
+  app.use("/publication", publicationRoutes);
   app.use("/comment", commentRoutes);
   app.use("/faculty", facultyRoutes);
   app.use("/contribution", contributionRoutes);
