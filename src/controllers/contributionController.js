@@ -2,7 +2,9 @@ const fs = require("fs");
 
 const Faculty = require("../models/Faculty");
 const Contribution = require("../models/Contribution");
+
 const { multipleJsonToObject, jsonToObject } = require("../utils/jsonToObject");
+const sendMail = require("../utils/sendMail");
 
 class ContributionController {
   async public(req, res, next) {
@@ -161,6 +163,13 @@ class ContributionController {
       });
 
       await contribution.save();
+
+      const fac = await Faculty.findOne({ _id: req.query.facultyId }).populate(
+        "coordinator"
+      );
+
+      // TODO: Sua content
+      await sendMail(fac.coordinator.email, `Content: testing`);
 
       req.flash("success", "Contribution saved successfully");
     } catch (err) {
