@@ -10,24 +10,33 @@ const transport = nodemailer.createTransport(
   })
 );
 
-const sendMail = (receiver, content) => {
+const sendMail = (receiver, faculty, contribution) => {
   const mail = {
     from: {
-      name: "COMP1640-2024",
-      address: "thanhntgcs190601@fpt.edu.vn",
+      name: "COMP1640",
+      address: process.env.MAIL_ADDRESS,
     },
     to: receiver,
     subject: "A contribution is submitted",
-    // html: "<b>Wow Big powerful letters</b>",
-    text: content,
+    html: `<p>Faculty name: <b>${faculty.name}</b></p>
+    <p>Contribution content: <b>${contribution.content}</b></p>
+    ${
+      contribution.files.length > 0
+        ? `<p>Files:</p>
+      <ul>
+        ${contribution.files.map((file) => {
+          return `<li>${file}</li>`;
+        })}
+      </ul>`
+        : ""
+    }`,
   };
-  console.log(mail);
 
   transport.sendMail(mail, (err, info) => {
     if (err) {
       console.error(`Error: ${err}`);
     } else {
-      console.log(`Response: ${info}`);
+      console.info(`Response: ${info}`);
     }
   });
 };

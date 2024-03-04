@@ -164,12 +164,11 @@ class ContributionController {
 
       await contribution.save();
 
-      const fac = await Faculty.findOne({ _id: req.query.facultyId }).populate(
-        "coordinator"
-      );
+      const faculty = await Faculty.findOne({
+        _id: req.query.facultyId,
+      }).populate("coordinator");
 
-      // TODO: Sua content
-      await sendMail(fac.coordinator.email, `Content: testing`);
+      sendMail(faculty.coordinator.email, faculty, contribution);
 
       req.flash("success", "Contribution saved successfully");
     } catch (err) {
