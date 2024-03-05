@@ -7,7 +7,6 @@ module.exports = {
     }
   },
   canCommentExpired: function (closureDate, role) {
-    console.log(closureDate, role);
     let timeLeft = new Date(closureDate) - new Date();
 
     if (role === "Marketing Coordinator") {

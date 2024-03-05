@@ -1,5 +1,5 @@
 <section class="dark:bg-gray-900">
-    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-[calc(100vh-100px)] lg:py-0">
         <div
             class="w-full bg-white rounded-lg shadow-2xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -42,14 +42,6 @@
                                     and Conditions</a></label>
                         </div>
                     </div>
-                    {{#if messages}}
-                    <div class="mb-2 bg-red-100 border border-red-200 text-sm text-red-800 rounded-lg dark:bg-red-800/10 dark:border-red-900 dark:text-red-500"
-                        role="alert">
-                        <div class="flex p-3">
-                            {{messages}}
-                        </div>
-                    </div>
-                    {{/if}}
                     <button type="submit"
                         class="w-full text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800">Create
                         an account</button>

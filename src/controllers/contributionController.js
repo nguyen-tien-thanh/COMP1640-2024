@@ -131,6 +131,7 @@ class ContributionController {
             path: "user",
             select: "name avatar",
           },
+          options: { sort: { createdAt: -1 } },
         }),
     ]).then(([facs, fac, cons]) => {
       var canContribute = false;
@@ -196,7 +197,8 @@ class ContributionController {
         _id: req.query.facultyId,
       }).populate("coordinator");
 
-      sendMail(faculty.coordinator.email, faculty, contribution);
+      if (req.user.role.name !== "Marketing Coordinator")
+        sendMail(faculty.coordinator.email, faculty, contribution);
 
       req.flash("success", "Contribution saved successfully");
     } catch (err) {
@@ -235,9 +237,10 @@ class ContributionController {
           content: content,
         }
       );
-
+      req.flash("success", "Update successfully");
       return res.status(200).send({ message: "Update successfully" });
     } catch (err) {
+      req.flash("error", "Can't update right now");
       console.error(`Error updating: `, err);
       return res.status(404).send({ message: "Update failed" });
     }

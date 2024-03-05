@@ -149,27 +149,9 @@
     var hash = $(this).attr("href");
     if (hash == "") e.preventDefault();
   });
-
-  /* Checks page scroll offset and changes active link on page load */
-  changeActive();
-
-  /* Change active link on scroll */
-  $(document).scroll(function () {
-    changeActive();
-  });
-
-  /* Function to change the active link */
-  function changeActive() {
-    const menuItems = getMenuItems();
-    $.each(menuItems, function (index, value) {
-      var offsetSection = $("#" + value).offset().top;
-      var docScroll = $(document).scrollTop();
-      var docScroll1 = docScroll + 1;
-
-      if (docScroll1 >= offsetSection) {
-        $(".nav-link").removeClass("active");
-        $('.nav-link[href$="#' + value + '"]').addClass("active");
-      }
-    });
-  }
 })(jQuery);
+
+const alert = document.querySelector(".alert");
+setTimeout(() => {
+  alert.classList.add("hidden");
+}, 3000);

@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const Role = require("../models/Role");
 
+const passport = require("passport");
+
 class HomeController {
   logout(req, res, next) {
     req.logout(function (err) {
@@ -18,16 +20,34 @@ class HomeController {
       noHeader: true,
       title: "Login",
       email: req.flash("email"),
-      successMessages: req.flash("success"),
-      errorMessages: req.flash("error"),
     });
+  }
+
+  async validate(req, res, next) {
+    passport.authenticate("local", (err, user, info) => {
+      if (err) {
+        req.flash("error", "Internal Server Error");
+        return next(err);
+      }
+      if (!user) {
+        req.flash("error", info.message);
+        return res.redirect("/login");
+      }
+      // Authentication successful, log in user
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+
+        res.redirect("/");
+      });
+    })(req, res, next);
   }
 
   register(req, res, next) {
     return res.render("Register", {
       noHeader: true,
       title: "Register",
-      messages: req.flash("error"),
     });
   }
 

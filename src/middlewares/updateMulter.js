@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-function handleFileUpload(req, res, next) {
+const handleFileUpload = (req, res, next) => {
   upload.array("files", 10)(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       req.flash("error", "File upload error");
@@ -22,6 +22,6 @@ function handleFileUpload(req, res, next) {
     }
     next();
   });
-}
+};
 
 module.exports = { handleFileUpload };

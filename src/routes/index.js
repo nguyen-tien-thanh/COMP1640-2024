@@ -4,8 +4,11 @@ const contributionRoutes = require("./contributionRoutes");
 const facultyRoutes = require("./facultyRoutes");
 const commentRoutes = require("./commentRoutes");
 const publicationRoutes = require("./publicationRoutes");
+const flashMessage = require("../middlewares/flashMessage");
 
 function route(app) {
+  app.use(flashMessage);
+
   app.use((req, res, next) => {
     if (req.isAuthenticated()) {
       res.locals.user = jsonToObject(req.user);

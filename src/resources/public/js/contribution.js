@@ -59,15 +59,14 @@ function submitUpdate(id) {
   })
     .then((response) => {
       if (response.ok) {
-        console.log(btnX, btnSubmit, contentElement);
         btnX.forEach((btn) => (btn.style.display = "none"));
         btnSubmit.style.display = "none";
         contentElement.contentEditable = false;
       } else {
-        console.log("Failed to submit update");
+        alert("Failed to submit update");
       }
     })
     .catch((error) => {
-      console.log("Error submitting update:", error);
+      alert("Error submitting update:", error);
     });
 }

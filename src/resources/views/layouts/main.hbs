@@ -19,6 +19,19 @@
 </head>
 
 <body data-spy="scroll" data-target=".fixed-top">
+    {{#if error.message}}
+    <div class="alert z-50 fixed flex items-center w-full max-w-xs p-4 space-x-4 text-red-700 bg-red-100 divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow left-5 bottom-5"
+        role="alert">
+        <div class="text-sm font-normal">{{error.message}}</div>
+    </div>
+    {{/if}}
+    {{#if success.message}}
+    <div class="alert z-50 fixed flex items-center w-full max-w-xs p-4 space-x-4 text-green-700 bg-green-100 divide-x rtl:divide-x-reverse divide-gray-200 rounded-lg shadow left-5 bottom-5"
+        role="alert">
+        <div class="text-sm font-normal">{{success.message}}</div>
+    </div>
+    {{/if}}
+
     <nav class="navbar fixed-top">
         <div class="container sm:px-4 lg:px-8 flex flex-wrap items-center justify-between lg:flex-nowrap">
 
@@ -80,10 +93,10 @@
 
     {{>footer}}
 
-    <script src="./js/jquery.min.js"></script> <!-- jQuery for JavaScript plugins -->
-    <script src="./js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
-    <script src="./js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
-    <script src="./js/scripts.js"></script> <!-- Custom scripts -->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery.easing.min.js"></script>
+    <script src="./js/jquery.magnific-popup.js"></script>
+    <script src="./js/scripts.js"></script>
 </body>
 
 </html>
