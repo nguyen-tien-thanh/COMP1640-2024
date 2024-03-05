@@ -152,6 +152,8 @@
 })(jQuery);
 
 const alert = document.querySelector(".alert");
-setTimeout(() => {
-  alert.classList.add("hidden");
-}, 3000);
+if (alert) {
+  setTimeout(() => {
+    alert.classList.add("hidden");
+  }, 3000);
+}

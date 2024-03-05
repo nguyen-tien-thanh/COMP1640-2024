@@ -1,4 +1,4 @@
-<!-- Footer -->
+{{#ifeq noFooter 'true'}}
 <div class="footer">
   <div class="container px-4 sm:px-8">
     <div class="social-container">
@@ -43,9 +43,12 @@
       <li class="mb-2"><a href="/privacy">Privacy Policy</a></li>
     </ul>
     <p class="pb-2 p-small text-center">Copyright ©
-      <a href="https://greenwich.edu.vn/" class="no-underline">Greenwich</a></p>
+      <a href="https://greenwich.edu.vn/" class="no-underline">Greenwich</a>
+    </p>
 
     <p class="pb-2 p-small text-center">Distributed by:
-      <a href="!#" class="no-underline">Greenwich students</a></p>
+      <a href="!#" class="no-underline">Greenwich students</a>
+    </p>
   </div>
 </div>
+{{/ifeq}}

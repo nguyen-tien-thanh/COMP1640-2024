@@ -10,7 +10,7 @@
           <a href="/contribution?facultyId={{this._id}}">{{this.name}}</a>
         </h2>
         <p class="text-gray-500 dark:text-gray-400">By
-          <a href="/profile/{{this.coordinator._id}}"
+          <a href="/profile?userId={{this.coordinator._id}}"
             class="underline-offset-4 hover:underline">{{this.coordinator.name}}</a>
         </p>
         {{#if this.description}}<p>{{this.description}}</p>{{/if}}

@@ -7,7 +7,7 @@
                     <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
                         <img class="mr-4 w-16 h-16 rounded-full" src="/uploads/{{user.avatar}}" alt="{{user.name}}">
                         <div>
-                            <a href="/profile/{{user._id}}" rel="author"
+                            <a href="/profile?userId={{user._id}}" rel="author"
                                 class="text-lg font-bold text-gray-900 dark:text-white">{{user.name}}</a>
                             <p class="text-sm text-gray-500 dark:text-gray-400">{{user.role.name}}
                             </p>

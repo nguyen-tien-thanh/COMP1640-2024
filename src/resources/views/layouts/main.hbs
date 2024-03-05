@@ -32,7 +32,7 @@
     </div>
     {{/if}}
 
-    <nav class="navbar fixed-top">
+    <nav class="navbar fixed-top {{#ifeq title 'Profile'}}!bg-[#f1f9fc]{{/ifeq}}">
         <div class="container sm:px-4 lg:px-8 flex flex-wrap items-center justify-between lg:flex-nowrap">
 
             <a class="text-gray-800 font-semibold text-3xl leading-4 no-underline font-mono" href="/">COMP1640</a>
@@ -66,7 +66,8 @@
                     {{/ifeq}}
                     {{#if user}}
                     <li>
-                        <a class="nav-link {{#ifeq title 'Profile'}}active{{/ifeq}}" href="/profile">{{user.name}}</a>
+                        <a class="nav-link {{#ifeq title 'Profile'}}active{{/ifeq}}"
+                            href="/profile?userId={{user._id}}">{{user.name}}</a>
                     </li>
                     <li class="flex lg:justify-center items-center">
                         <a class="px-2 no-underline" href="/logout">

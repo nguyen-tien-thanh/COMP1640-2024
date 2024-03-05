@@ -1,4 +1,14 @@
 module.exports = {
+  handleGender: function (gender) {
+    switch (gender) {
+      case 1:
+        return "Male";
+      case 0:
+        return "Female";
+      default:
+        return "Not identified";
+    }
+  },
   ifNotEqDate: function (date1, date2, options) {
     if (new Date(date1).getTime() !== new Date(date2).getTime()) {
       return options.fn(this);
