@@ -5,6 +5,8 @@ const facultyRoutes = require("./facultyRoutes");
 const commentRoutes = require("./commentRoutes");
 const publicationRoutes = require("./publicationRoutes");
 const profileRoutes = require("./profileRoutes");
+const adminRoutes = require("./adminRoutes");
+
 
 const flashMessage = require("../middlewares/flashMessage");
 const checkLogin = require("../middlewares/checkLogin");
@@ -21,7 +23,7 @@ function route(app) {
     next();
   });
 
-  // TODO: adminRoutes
+  app.use("/admin", checkLogin, adminRoutes);
   app.use("/profile", checkLogin, profileRoutes);
   app.use("/publication", publicationRoutes);
   app.use("/comment", checkLogin, commentRoutes);
