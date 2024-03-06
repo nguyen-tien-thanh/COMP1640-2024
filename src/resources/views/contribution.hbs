@@ -27,7 +27,7 @@
 
             {{#if faculty.description}}<p>{{faculty.description}}</p>{{/if}}
             <div class="flex justify-center w-full h-[300px] py-4">
-                {{#if faculty.image}}<img src="{{faculty.image}}" alt="" class="h-full">{{/if}}
+                {{#if faculty.image}}<img src="/uploads/{{faculty.image}}" alt="" class="h-full">{{/if}}
             </div>
 
             <section class="not-format py-4">
@@ -253,7 +253,7 @@
             {{#eachUpTo (canSeeFaculties faculties user) 3}}
             <article class="max-w-xs">
                 <a href="/contribution?facultyId={{_id}}">
-                    <img src="{{image}}" class="mb-5 rounded-lg" alt="Image 1">
+                    <img src="/uploads/{{image}}" class="mb-5 rounded-lg" alt="Image 1">
                 </a>
                 <h2 class="mb-2 text-xl font-bold leading-tight text-gray-900 dark:text-white">
                     <a href="/contribution?facultyId={{_id}}">{{name}}</a>

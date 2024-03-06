@@ -23,6 +23,7 @@ class PublicationController {
     } catch (err) {
       console.error(err);
       return res.render("error", {
+        noHeader: true,
         statusCode: 500,
         message: err.message,
       });

@@ -1,0 +1,110 @@
+<div class="w-full">
+    <a href="/admin/download">
+        <button type="button"
+            class="flex items-center p-3 text-sm font-medium text-white border-t border-green-800 rounded-b-lg bg-green-600 hover:bg-green-700">
+            <i class="fa-solid fa-download mr-2"></i>
+            Download
+        </button>
+    </a>
+    <div class="bg-white overflow-auto">
+        <table class="min-w-full leading-normal">
+            <thead>
+                <tr>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Faculty
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Owner
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Content
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Files
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Is Published
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Created At
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#contributions}}
+                <tr>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">
+                            {{faculty.name}}
+                        </p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{user.name}}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">
+                            {{content}}
+                        </p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <div class="grid grid-cols-2 gap-2 w-64">
+                            {{#files}}
+                            {{#if (isImage this)}}
+                            <div id="{{this}}"
+                                class="flex flex-wrap items-center justify-center border border-gray-200 bg-white rounded-lg shadow duration-300 h-28 w-28">
+                                <img src="/uploads/{{this}}" alt="Image File"
+                                    class="w-full h-full object-cover rounded-lg bg-white" />
+                            </div>
+                            {{else if (isDocument this)}}
+                            <div id="{{this}}" title="{{this}}"
+                                class="h-28 w-28 flex flex-col justify-center items-center">
+                                <i class="fas fa-file-word text-7xl text-blue-500"></i>
+                                <span
+                                    class="text-blue-500 mt-2 overflow-hidden overflow-ellipsis whitespace-nowrap w-20 text-sm">{{this}}</span>
+                            </div>
+                            {{/if}}
+                            {{/files}}
+                        </div>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        {{#ifeq isPublished true}}
+                        <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                            <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                            <span class="relative">True</span>
+                        </span>
+                        {{else}}
+                        <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                            <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                            <span class="relative">False</span>
+                        </span>
+                        {{/ifeq}}
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{formatDateTime createdAt 'date'}}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <div class="flex gap-1">
+                            <a href="/contribution?facultyId={{faculty._id}}">
+                                <button type="button"
+                                    class="flex items-center align-middle py-2 px-3 text-sm font-medium text-white border-blue-800 border rounded bg-blue-600 hover:bg-blue-700">
+                                    <i class="fa-solid fa-info"></i>
+                                </button>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {{/contributions}}
+            </tbody>
+        </table>
+    </div>
+</div>

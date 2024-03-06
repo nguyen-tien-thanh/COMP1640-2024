@@ -24,4 +24,4 @@ const handleFileUpload = (req, res, next) => {
   });
 };
 
-module.exports = { handleFileUpload };
+module.exports = { handleFileUpload, upload };

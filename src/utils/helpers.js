@@ -1,4 +1,10 @@
 module.exports = {
+  isIncluded: function (arr, check) {
+    return arr.some((a) => a._id.equals(check));
+  },
+  jsonParse: function (data) {
+    return JSON.stringify(data);
+  },
   handleGender: function (gender) {
     switch (gender) {
       case 1:
@@ -6,7 +12,7 @@ module.exports = {
       case 0:
         return "Female";
       default:
-        return "Not identified";
+        return null;
     }
   },
   ifNotEqDate: function (date1, date2, options) {
@@ -157,32 +163,6 @@ module.exports = {
       return options.fn(this);
     } else {
       return options.inverse(this);
-    }
-  },
-  ifCond: function (v1, operator, v2, options) {
-    switch (operator) {
-      case "==":
-        return v1 == v2 ? options.fn(this) : options.inverse(this);
-      case "===":
-        return v1 === v2 ? options.fn(this) : options.inverse(this);
-      case "!=":
-        return v1 != v2 ? options.fn(this) : options.inverse(this);
-      case "!==":
-        return v1 !== v2 ? options.fn(this) : options.inverse(this);
-      case "<":
-        return v1 < v2 ? options.fn(this) : options.inverse(this);
-      case "<=":
-        return v1 <= v2 ? options.fn(this) : options.inverse(this);
-      case ">":
-        return v1 > v2 ? options.fn(this) : options.inverse(this);
-      case ">=":
-        return v1 >= v2 ? options.fn(this) : options.inverse(this);
-      case "&&":
-        return v1 && v2 ? options.fn(this) : options.inverse(this);
-      case "||":
-        return v1 || v2 ? options.fn(this) : options.inverse(this);
-      default:
-        return options.inverse(this);
     }
   },
 };

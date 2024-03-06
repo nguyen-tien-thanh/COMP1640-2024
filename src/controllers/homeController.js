@@ -33,7 +33,6 @@ class HomeController {
         req.flash("error", info.message);
         return res.redirect("/login");
       }
-      // Authentication successful, log in user
       req.logIn(user, function (err) {
         if (err) {
           return next(err);

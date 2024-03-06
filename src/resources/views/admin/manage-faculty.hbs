@@ -1,0 +1,291 @@
+<div class="w-full">
+    <button type="button" onclick="toggleCreateFaculty()"
+        class="flex items-center p-3 text-sm font-medium text-white border-t border-green-800 rounded-b-lg bg-green-600 hover:bg-green-700">
+        <i class="fa-solid fa-plus mr-2"></i>
+        Create
+    </button>
+    <div class="bg-white overflow-auto">
+        <table class="min-w-full leading-normal">
+            <thead>
+                <tr>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Faculty
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Coordinator
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Enrolled Users
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Description
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Status
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Closure Date
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Closure Time
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="form-create-faculty" class="hidden">
+                    <form action="/faculty/store" method="post" enctype="multipart/form-data">
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex items-center">
+                                <div
+                                    class="flex-shrink-0 w-10 h-10 cursor-pointer bg-white hover:bg-gray-200 rounded-full">
+                                    <input type="file" name="image" id="image-input" style="display: none;"
+                                        onchange="previewImage(this)" accept="image/*">
+                                    <img id="image-create-preview" class="w-full h-full object-contain p-2"
+                                        src="/uploads/icon-image.png" alt="Preview Image"
+                                        onclick="document.getElementById('image-input').click();" title="Add image" />
+                                </div>
+                                <div class="ml-3">
+                                    <input type="text" name="name" id="" class="p-2 border rounded focus:outline-none"
+                                        placeholder="Faculty name *" autofocus required>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <select class="block w-fit border p-2 rounded" name="coordinator" required>
+                                {{#each users}}
+                                {{#ifeq role.name 'Marketing Coordinator'}}
+                                <option value="{{_id}}">{{name}}
+                                </option>
+                                {{/ifeq}}
+                                {{/each}}
+                            </select>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm relative">
+                            <button id="btn-dropdown-create" data-dropdown-toggle="dropdown-create"
+                                onclick="openDropdown('create')"
+                                class="inline-flex items-center p-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800"
+                                type="button"><i class="fa-solid fa-users"></i></button>
+                            <div id="dropdown-create"
+                                class="dropdown absolute z-10 hidden bg-white rounded-lg shadow w-max">
+                                <ul class="p-3 overflow-y-auto text-sm text-gray-700"
+                                    aria-labelledby="btn-dropdown-create">
+                                    {{#each users}}
+                                    <li>
+                                        <div class="flex items-center p-2 rounded hover:bg-gray-100">
+                                            <input id="checkbox-{{_id}}" type="checkbox" name="users" value="{{_id}}"
+                                                class="w-4 h-4 mr-2 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <label for="checkbox-{{_id}}"
+                                                class="w-full ms-2 text-sm font-medium text-gray-900 rounded">{{name}}</label>
+                                        </div>
+                                    </li>
+                                    {{/each}}
+                                </ul>
+                                <button type="button" onclick="openDropdown('create')"
+                                    class="flex items-center justify-center w-full p-2 text-sm font-medium text-red-600 border-t border-gray-200 rounded-b-lg bg-gray-50 hover:bg-gray-100">
+                                    Close
+                                </button>
+                            </div>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <textarea type="text" name="description" id="" class="p-2 border rounded focus:outline-none"
+                                placeholder="Description" rows="1"></textarea>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <span class="relative inline-block px-3 py-1 font-semibold text-blue-900 leading-tight">
+                                <span aria-hidden class="absolute inset-0 bg-blue-200 opacity-50 rounded-full"></span>
+                                <span class="relative">Creating</span>
+                            </span>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <input type="date" name="date" required>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <input type="time" name="time" required>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex gap-1">
+                                <button type="submit"
+                                    class="flex items-center align-middle py-2 px-3 text-sm font-medium text-white border-green-800 border rounded bg-green-600 hover:bg-green-700">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                </button>
+                                <button type="button" onclick="toggleCreateFaculty()"
+                                    class="flex items-center align-middle py-2 px-3 text-sm font-medium text-white border-red-800 border rounded bg-red-600 hover:bg-red-700">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </form>
+                </tr>
+                {{#faculties}}
+                <tr>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 w-10 h-10">
+                                <img class="w-full h-full rounded-full object-cover" src="/uploads/{{image}}" alt="" />
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-gray-900 whitespace-no-wrap">
+                                    {{name}}
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <!-- <p class="text-gray-900 whitespace-no-wrap">{{coordinator.name}}</p> -->
+                        <select id="select-coordinator-{{_id}}" class="block w-fit border p-2 rounded"
+                            onchange="handleCoordinatorChange('{{_id}}')">
+                            {{#each ../users}}
+                            {{#ifeq role.name 'Marketing Coordinator'}}
+                            <option value="{{_id}}" {{#ifeq name ../coordinator.name }} selected {{/ifeq}}>{{name}}
+                            </option>
+                            {{/ifeq}}
+                            {{/each}}
+                        </select>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm relative">
+                        <button id="btn-dropdown-{{_id}}" data-dropdown-toggle="dropdown-{{_id}}"
+                            onclick="openDropdown('{{_id}}')"
+                            class="inline-flex items-center p-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800"
+                            type="button"><i class="fa-solid fa-users"></i></button>
+                        <div id="dropdown-{{_id}}"
+                            class="dropdown absolute z-10 hidden bg-white rounded-lg shadow w-max">
+                            <form action="/faculty/update/{{_id}}" method="post">
+                                <ul class="p-3 overflow-y-auto text-sm text-gray-700"
+                                    aria-labelledby="btn-dropdown-{{_id}}">
+                                    {{#each ../users}}
+                                    <li>
+                                        <div class="flex items-center p-2 rounded hover:bg-gray-100">
+                                            <input id="checkbox-{{_id}}" type="checkbox" name="users" value="{{_id}}"
+                                                {{#if (isIncluded ../users _id)}} checked {{/if}}
+                                                class="w-4 h-4 mr-2 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                            <label for="checkbox-{{_id}}"
+                                                class="w-full ms-2 text-sm font-medium text-gray-900 rounded">{{name}}</label>
+                                        </div>
+                                    </li>
+                                    {{/each}}
+                                </ul>
+                                <button type="submit"
+                                    class="flex items-center w-full p-3 text-sm font-medium text-green-600 border-t border-gray-200 rounded-b-lg bg-gray-50 hover:bg-gray-100">
+                                    <i class="fa-solid fa-floppy-disk mr-2"></i>
+                                    Save
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">
+                            {{description}}
+                        </p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        {{#if (checkExpired closureDate)}}
+                        <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                            <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
+                            <span class="relative">Expired</span>
+                        </span>
+                        {{else}}
+                        <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                            <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                            <span class="relative">Active</span>
+                        </span>
+                        {{/if}}
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{formatDateTime closureDate 'date'}}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{formatDateTime closureDate 'time'}}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <div class="flex gap-1">
+                            <a href="/contribution?facultyId={{_id}}">
+                                <button type="button"
+                                    class="flex items-center align-middle py-2 px-3 text-sm font-medium text-white border-blue-800 border rounded bg-blue-600 hover:bg-blue-700">
+                                    <i class="fa-solid fa-info"></i>
+                                </button>
+                            </a>
+                            <a href="/faculty/delete/{{_id}}">
+                                <button type="button"
+                                    class="flex items-center align-middle p-2 text-sm font-medium text-white border-red-800 border rounded bg-red-600 hover:bg-red-700">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {{/faculties}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function toggleCreateFaculty() {
+        const form = document.querySelector("#form-create-faculty");
+        form.classList.toggle('hidden')
+    }
+
+    function previewImage(input) {
+        const file = input.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const imagePreview = document.getElementById('image-create-preview');
+                imagePreview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function openDropdown(id) {
+        const dropdown = document.querySelector(`#dropdown-${id}`)
+        const dropdowns = document.querySelectorAll('.dropdown');
+
+        dropdowns.forEach(dropdown => {
+            const dropdownId = dropdown.id;
+            if (dropdownId !== `dropdown-${id}`) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        dropdown.classList.toggle("hidden");
+    }
+
+    function handleCoordinatorChange(id) {
+        const coordinatorSelect = document.getElementById(`select-coordinator-${id}`);
+        const selectedCoordinator = coordinatorSelect.value;
+
+        fetch(`/faculty/update/${id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                coordinator: selectedCoordinator
+            }),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert("Failed to submit update");
+                }
+            })
+            .catch((error) => {
+                alert("Error submitting update:", error);
+            });
+    }
+</script>

@@ -6,7 +6,7 @@ const Faculty = new mongoose.Schema(
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     coordinator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     name: { type: String, maxLength: 255, required: true },
-    image: { type: String, default: null },
+    image: { type: String, default: "icon-image.png" },
     description: { type: String, maxLength: 255 },
     closureDate: { type: Date, required: true },
   },

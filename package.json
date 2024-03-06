@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "archiver": "^7.0.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "connect-flash": "^0.1.1",
@@ -28,6 +29,7 @@
     "nodemon": "^3.1.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
+    "rimraf": "^5.0.5",
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {

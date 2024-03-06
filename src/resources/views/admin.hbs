@@ -1,0 +1,273 @@
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-6">
+    <div class="lg:pr-2">
+        <p class="text-xl py-3 flex items-center">
+            Contributions per faculty
+        </p>
+        <div class="p-6 bg-white">
+            <canvas id="chartOne" width="400" height="200"></canvas>
+        </div>
+    </div>
+    <div class="lg:pl-2">
+        <p class="text-xl py-3 flex items-center">
+            Contributions per months
+        </p>
+        <div class="p-6 bg-white">
+            <canvas id="chartTwo" width="400" height="200"></canvas>
+        </div>
+    </div>
+    <div class="lg:pl-2">
+        <p class="text-xl py-3 flex items-center">
+            Most contributions published by Faculty
+        </p>
+        <div class="p-6 bg-white">
+            <canvas id="chartThree" width="400" height="200"></canvas>
+        </div>
+    </div>
+    <div class="lg:pl-2">
+        <p class="text-xl py-3 flex items-center">
+            Most contributions published by user
+        </p>
+        <div class="p-6 bg-white">
+            <canvas id="chartFour" width="400" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function parse(string) {
+        string = string.replace(/&quot;/g, '"');
+        return JSON.parse(string)
+    }
+    var faculties = parse('{{jsonParse faculties}}')
+    var contributions = parse('{{jsonParse contributions}}')
+
+    var chartOneLabels = faculties.map(fal => fal.name);
+    var chartOneDatasets = chartOneLabels.map(falName => {
+        var contributionsForFaculty = contributions.filter(contribution => contribution.faculty.name === falName);
+        return contributionsForFaculty.length;
+    });
+    var chartOne = document.getElementById('chartOne');
+    new Chart(chartOne, {
+        type: 'bar',
+        data: {
+            labels: chartOneLabels,
+            datasets: [{
+                label: 'Contributions',
+                data: chartOneDatasets,
+                backgroundColor: generateRandomColor(chartOneLabels)
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var chartTwoLabels = () => {
+        const uniqueMonths = new Set();
+        contributions.forEach(contribution => {
+            const date = new Date(contribution.createdAt);
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            const formattedMonth = month < 9 ? '0' + (month + 1) : (month + 1);
+            const label = `${formattedMonth}/${year}`;
+            uniqueMonths.add(label);
+        });
+        return Array.from(uniqueMonths);
+    }
+    var chartTwoDatasets = () => {
+        const labels = chartTwoLabels();
+        const result = Array(labels.length).fill(0);
+
+        contributions.forEach(contribution => {
+            const date = new Date(contribution.createdAt);
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            const label = `${(month + 1).toString().padStart(2, '0')}/${year}`;
+
+            const index = labels.findIndex(l => l === label);
+            if (index !== -1) {
+                result[index]++;
+            }
+        });
+
+        return result;
+    }
+    var chartTwo = document.getElementById('chartTwo');
+    new Chart(chartTwo, {
+        type: 'line',
+        data: {
+            labels: chartTwoLabels(),
+            datasets: [{
+                label: 'Contributions',
+                data: chartTwoDatasets(),
+                fill: false,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: false,
+                        stepSize: 1
+                    }
+                }],
+            }
+        }
+    });
+
+    var chartThreeLabels = chartOneLabels
+        .map(falName => {
+            var contributionsForFaculty = contributions.filter(contribution => {
+                return contribution.faculty.name === falName && contribution.isPublished === true;
+            });
+            if (contributionsForFaculty.length > 0) {
+                return falName;
+            }
+        })
+        .filter(label => label !== undefined);
+    var chartThreeDatasets = chartThreeLabels.map(falName => {
+        var contributionsForFaculty = contributions.filter(contribution => {
+            return contribution.faculty.name === falName && contribution.isPublished === true;
+        });
+        return contributionsForFaculty.length;
+    });
+    var chartThree = document.getElementById('chartThree');
+    new Chart(chartThree, {
+        type: 'pie',
+        data: {
+            labels: chartThreeLabels,
+            datasets: [{
+                label: 'Number of contributions published',
+                data: chartThreeDatasets,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+    });
+
+    const chartFourDataLabels = () => {
+        const chartFourLabels = {};
+
+        contributions.forEach(con => {
+            const userId = con.user._id;
+            chartFourLabels[userId] = 0;
+        });
+
+        contributions.forEach(con => {
+            if (con.isPublished === true) {
+                const userId = con.user._id;
+                chartFourLabels[userId]++;
+            }
+        });
+
+        const userNames = Object.keys(chartFourLabels).map(userId => {
+            const contribution = contributions.find(con => con.user._id === userId);
+            return contribution ? contribution.user.name : "Unknown";
+        });
+
+        return userNames;
+    };
+    const chartFourDataAll = () => {
+        const chartFourLabels = {};
+
+        contributions.forEach(con => {
+            const userId = con.user._id;
+            if (!chartFourLabels[userId]) {
+                chartFourLabels[userId] = 0;
+            }
+            chartFourLabels[userId]++;
+        });
+
+        return Object.values(chartFourLabels);
+    }
+    const chartFourDataPublished = () => {
+        const chartFourLabels = {};
+
+        contributions.forEach(con => {
+            const userId = con.user._id;
+            chartFourLabels[userId] = 0;
+        });
+
+        contributions.forEach(con => {
+            if (con.isPublished === true) {
+                const userId = con.user._id;
+                chartFourLabels[userId]++;
+            }
+        });
+
+        return Object.values(chartFourLabels);
+    };
+    var chartFour = document.getElementById('chartFour');
+    new Chart(chartFour, {
+        type: 'bar',
+        data: {
+            labels: sortByPublishedCount(chartFourDataLabels(), chartFourDataPublished()),
+            datasets: [{
+                label: 'Published',
+                data: sortByPublishedCount(chartFourDataPublished(), chartFourDataPublished()),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }, {
+                label: 'All',
+                data: sortByPublishedCount(chartFourDataAll(), chartFourDataPublished()),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            },]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    function generateRandomColor(params) {
+        var length = typeof params == 'number' ? params : params.length;
+        var colors = [];
+        for (var i = 0; i < length; i++) {
+            var r = Math.floor(Math.random() * 256);
+            var g = Math.floor(Math.random() * 256);
+            var b = Math.floor(Math.random() * 256);
+            colors.push(`rgba(${r}, ${g}, ${b}, 0.2)`);
+        }
+        return colors;
+    }
+
+    function sortByPublishedCount(data, published) {
+        const combinedData = data.map((item, index) => ({ item, published: published[index] }));
+        combinedData.sort((a, b) => b.published - a.published);
+
+        const sortedLabels = combinedData.slice(0, 5).map(entry => entry.item);
+
+        return sortedLabels;
+    };
+</script>

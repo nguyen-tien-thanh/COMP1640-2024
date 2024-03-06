@@ -3,8 +3,8 @@
     <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
       {{#each (canSeeFaculties faculties user)}}
       <article class="max-w-xs">
-        <a href="/contribution?facultyId={{this._id}}">
-          <img src="{{this.image}}" class="mb-5 rounded-lg" alt="Image 1" />
+        <a href="/contribution?facultyId={{this._id}}" class="flex justify-center">
+          <img src="/uploads/{{this.image}}" class="mb-5 rounded-lg max-h-40 w-full object-cover" alt="Image 1" />
         </a>
         <h2 class="mb-2 text-xl font-bold leading-tight text-gray-900 dark:text-white">
           <a href="/contribution?facultyId={{this._id}}">{{this.name}}</a>
