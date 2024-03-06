@@ -9,7 +9,6 @@ const adminRoutes = require("./adminRoutes");
 
 const flashMessage = require("../middlewares/flashMessage");
 const checkLogin = require("../middlewares/checkLogin");
-const { isAdmin } = require("../middlewares/checkRole");
 
 function route(app) {
   app.use(flashMessage);
@@ -23,7 +22,7 @@ function route(app) {
     next();
   });
 
-  app.use("/admin", adminRoutes); // TODO  app.use("/admin", checkLogin, isAdmin, adminRoutes);
+  app.use("/admin", checkLogin, adminRoutes);
   app.use("/profile", checkLogin, profileRoutes);
   app.use("/publication", publicationRoutes);
   app.use("/comment", checkLogin, commentRoutes);

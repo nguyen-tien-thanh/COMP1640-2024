@@ -7,7 +7,10 @@ const isAdmin = (req, res, next) => {
 };
 
 const isManager = (req, res, next) => {
-  if (req.user.role.name === "Marketing Manager") {
+  if (
+    req.user.role.name === "Marketing Manager" ||
+    req.user.role.name === "Administrator"
+  ) {
     return next();
   } else {
     renderForbidden(res);
@@ -15,7 +18,10 @@ const isManager = (req, res, next) => {
 };
 
 const isCoordinator = (req, res, next) => {
-  if (req.user.role.name === "Marketing Coordinator") {
+  if (
+    req.user.role.name === "Marketing Coordinator" ||
+    req.user.role.name === "Administrator"
+  ) {
     return next();
   } else {
     renderForbidden(res);
@@ -23,7 +29,11 @@ const isCoordinator = (req, res, next) => {
 };
 
 const isStudent = (req, res, next) => {
-  if (req.user.role.name === "Student") {
+  if (
+    req.user.role.name === "Student" ||
+    req.user.role.name === "Administrator" ||
+    req.user.role.name === "Marketing Coordinator"
+  ) {
     return next();
   } else {
     renderForbidden(res);
