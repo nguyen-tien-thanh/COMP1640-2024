@@ -4,7 +4,7 @@ const checkLogin = (req, res, next) => {
   } else {
     return res.render("error", {
       noHeader: true,
-      statusCode: 409,
+      statusCode: 401,
       message: "Unauthorized. Please log in.",
     });
   }
