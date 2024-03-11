@@ -1,4 +1,4 @@
-<section class="dark:bg-gray-900">
+<section class="dark:bg-gray-900 relative">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto h-[calc(100vh-100px)] lg:py-0">
         <div
             class="w-full bg-white rounded-lg shadow-2xl dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -35,4 +35,79 @@
             </div>
         </div>
     </div>
+    <div
+        class="absolute right-5 top-1/2 transform -translate-y-1/2 h-fit w-fit bg-gray-100 opacity-50 transition p-2 rounded-lg hover:opacity-100">
+        <div>
+            <h5 class="text-center">Accounts</h5>
+            <ul>
+                <li>
+                    <ul>
+                        <li>
+                            <p><b>Admin</b>
+                                <br>
+                                <i class="fa-solid fa-copy cursor-pointer text-sky-400 hover:text-sky-600 ml-3"
+                                    onclick="copyAccount('admin@gmail.com', 'admin')"></i>
+                                <span>admin@gmail.com | admin</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p><b>Marketing Manger</b>
+                                <br>
+                                <i class="fa-solid fa-copy cursor-pointer text-sky-400 hover:text-sky-600 ml-3"
+                                    onclick="copyAccount('manager@gmail.com', 'manager')"></i>
+                                <span>manager@gmail.com | manager</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p><b>Marketing Coordinator</b>
+                                <br>
+                                <i class="fa-solid fa-copy cursor-pointer text-sky-400 hover:text-sky-600 ml-3"
+                                    onclick="copyAccount('itcoordinator@gmail.com', 'coordinator')"></i>
+                                <span>itcoordinator@gmail.com | coordinator</span>
+                                <br>
+                                <i class="fa-solid fa-copy cursor-pointer text-sky-400 hover:text-sky-600 ml-3"
+                                    onclick="copyAccount('hrmcoordinator@gmail.com', 'coordinator')"></i>
+                                <span>hrmcoordinator@gmail.com | coordinator</span>
+                                <br>
+                                <i class="fa-solid fa-copy cursor-pointer text-sky-400 hover:text-sky-600 ml-3"
+                                    onclick="copyAccount('bacoordinator@gmail.com', 'coordinator')"></i>
+                                <span>bacoordinator@gmail.com | coordinator</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p><b>Student</b>
+                                <br>
+                                <i class="fa-solid fa-copy cursor-pointer text-sky-400 hover:text-sky-600 ml-3"
+                                    onclick="copyAccount('student@gmail.com', 'student')"></i>
+                                <span>student@gmail.com | student</span>
+                                <br>
+                                <i class="fa-solid fa-copy cursor-pointer text-sky-400 hover:text-sky-600 ml-3"
+                                    onclick="copyAccount('student2@gmail.com', 'student')"></i>
+                                <span>student2@gmail.com | student</span>
+                            </p>
+                        </li>
+                        <li>
+                            <p><b>Guest</b>
+                                <br>
+                                <i class="fa-solid fa-copy cursor-pointer text-sky-400 hover:text-sky-600 ml-3"
+                                    onclick="copyAccount('guest@gmail.com', 'guest')"></i>
+                                <span>guest@gmail.com | guest</span>
+                            </p>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
 </section>
+
+<script>
+    function copyAccount(username, pass) {
+        var email = document.getElementById("email");
+        var password = document.getElementById("password");
+
+        email.value = username
+        password.value = pass
+    }
+</script>

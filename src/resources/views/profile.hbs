@@ -24,12 +24,12 @@
                     <i class="fa-solid fa-location-dot fa-lg text-[#ff6e84] mr-4 min-w-4"></i> {{profile.address}}
                 </p>
                 {{/if}}
-                {{#if profile.gender}}
+                {{#ifNotEq profile.gender '2'}}
                 <p class="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
                     <i class="fa-solid fa-person-half-dress fa-lg text-[#ff6e84] mr-4 min-w-4"></i> {{handleGender
                     profile.gender}}
                 </p>
-                {{/if}}
+                {{/ifNotEq}}
                 {{#if profile.phone}}
                 <p class="pt-2 text-gray-600 text-xs lg:text-sm flex items-center justify-center lg:justify-start">
                     <i class="fa-solid fa-phone fa-md text-[#ff6e84] mr-4 min-w-4"></i> {{profile.phone}}
