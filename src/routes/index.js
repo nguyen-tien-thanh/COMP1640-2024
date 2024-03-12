@@ -24,7 +24,7 @@ function route(app) {
 
   app.use("/admin", checkLogin, adminRoutes);
   app.use("/profile", checkLogin, profileRoutes);
-  app.use("/publication", publicationRoutes);
+  app.use("/publication", checkLogin, publicationRoutes);
   app.use("/comment", checkLogin, commentRoutes);
   app.use("/faculty", checkLogin, facultyRoutes);
   app.use("/contribution", checkLogin, contributionRoutes);
