@@ -50,8 +50,25 @@ module.exports = {
       return false;
     }
   },
+  canSeeContributions: function (cons, currentUser) {
+    if (
+      currentUser &&
+      (currentUser.role.name === "Administrator" ||
+        currentUser.role.name === "Marketing Manager")
+    ) {
+      return cons;
+    }
+    const result = cons.filter((con) => {
+      return con.faculty.users.some((id) => id.equals(currentUser._id));
+    });
+    return result;
+  },
   canSeeFaculties: function (faculties, currentUser) {
-    if (currentUser && currentUser.role.name === "Administrator") {
+    if (
+      currentUser &&
+      (currentUser.role.name === "Administrator" ||
+        currentUser.role.name === "Marketing Manager")
+    ) {
       return faculties;
     }
     const result = faculties.filter((fal) => {

@@ -50,11 +50,11 @@
                         <a class="nav-link {{#ifeq title 'Home'}}active{{/ifeq}}" href="/">Home
                         </a>
                     </li>
+                    {{#if user}}
                     <li>
                         <a class="nav-link {{#ifeq title 'Publication'}}active{{/ifeq}}"
                             href="/publication">Publication</a>
                     </li>
-                    {{#if user}}
                     <li>
                         <a class="nav-link {{#ifeq title 'Faculty'}}active{{/ifeq}}" href="/faculty">Faculty</a>
                     </li>

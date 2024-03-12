@@ -1,7 +1,7 @@
 <div aria-label="{{title}}" class="py-8 lg:py-12 dark:bg-gray-800">
     <div class="container mx-auto px-4 sm:px-8 xl:max-w-5xl xl:px-12">
         <div>
-            {{#contributions}}
+            {{#each (canSeeContributions contributions user)}}
             <article class="pb-8">
                 <address class="flex items-center not-italic">
                     <div class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
@@ -42,7 +42,7 @@
                     {{/files}}
                 </div>
             </article>
-            {{/contributions}}
+            {{/each}}
         </div>
     </div>
 </div>
