@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
+const Role = require("./Role");
 
 const User = new mongoose.Schema(
   {
     role: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Role",
-      default: "65e21312729a968a44048cbd", // Guest
     },
     faculty: { type: mongoose.Schema.Types.ObjectId, ref: "Faculty" },
     name: { type: String, maxLength: 255, required: true },
@@ -22,6 +22,18 @@ const User = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+User.pre("save", async function (next) {
+  if (!this.role) {
+    const roleGuest = await Role.findOne({ name: "Guest" });
+    if (roleGuest) {
+      this.role = roleGuest._id;
+    } else {
+      console.error("Role 'Guest' not found.");
+    }
+  }
+  next();
+});
 
 User.plugin(mongooseDelete, {
   overrideMethods: "all",
