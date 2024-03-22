@@ -37,9 +37,9 @@ const migrateRole = async () => {
     if (!roleExists) {
       const newRole = new Role({ name: role });
       await newRole.save();
-      console.log(`Migrate role...`);
     }
   }
+  console.log(`Migrate role...`);
 };
 
 const migrateAdmin = async () => {
@@ -55,7 +55,6 @@ const migrateAdmin = async () => {
     email: "admin@gmail.com",
     password: bcrypt.hashSync("admin", 10),
   });
-  console.log("user: ", user);
 
   await user.save();
   console.log(`Migrate admin...`);
