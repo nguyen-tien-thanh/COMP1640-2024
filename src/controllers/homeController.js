@@ -77,7 +77,7 @@ class HomeController {
       req.flash("success", "Successfully registered");
       req.flash("email", email);
 
-      return res.redirect("/login");
+      return res.redirect("back");
     } catch (error) {
       req.flash("error", "An error occurred. Try again later");
       return res.redirect("back");

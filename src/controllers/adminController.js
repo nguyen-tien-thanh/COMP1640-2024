@@ -38,7 +38,9 @@ class AdminController {
 
   async manageUser(req, res, next) {
     try {
-      const users = await User.find({}).populate("role");
+      const users = await User.find({})
+        .populate("role")
+        .sort({ createdAt: -1 });
       const roles = await Role.find({});
 
       return res.render("admin/manage-user", {

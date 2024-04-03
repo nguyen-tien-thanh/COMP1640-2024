@@ -1,4 +1,9 @@
 <div class="w-full">
+    <button type="button" onclick="toggleCreateUser()"
+        class="flex items-center p-3 text-sm font-medium text-white border-t border-green-800 rounded-b-lg bg-green-600 hover:bg-green-700">
+        <i class="fa-solid fa-plus mr-2"></i>
+        Create
+    </button>
     <div class="bg-white overflow-auto">
         <table class="min-w-full leading-normal">
             <thead>
@@ -31,9 +36,55 @@
                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Birthday
                     </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Actions
+                    </th>
                 </tr>
             </thead>
             <tbody>
+                <tr id="form-create-user" class="hidden">
+                    <form action="/register" method="POST">
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex items-center">
+                                <input type="text" name="name" id="" class="p-2 border rounded focus:outline-none"
+                                    placeholder="Full name *" autofocus required>
+                            </div>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <select id="select-{{_id}}" class="block w-fit border p-1 rounded"
+                                onchange="handleRoleChange('{{_id}}')" name="role">
+                                {{#each roles}}
+                                <option value="{{_id}}">{{name}}</option>
+                                {{/each}}
+                            </select>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex items-center">
+                                <input type="email" name="email" id="" class="p-2 border rounded focus:outline-none"
+                                    placeholder="Email *" required>
+                            </div>
+                        </td>
+                        <td colspan="4" class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex items-center">
+                                <input type="password" name="password" id=""
+                                    class="p-2 border rounded focus:outline-none" placeholder="Password*" required>
+                            </div>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex gap-1">
+                                <button type="submit"
+                                    class="flex items-center align-middle p-2 text-sm font-medium text-white border-green-800 border rounded bg-green-600 hover:bg-green-700">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                </button>
+                                <button type="button" onclick="toggleCreateUser()"
+                                    class="flex items-center align-middle p-2 text-sm font-medium text-white border-red-800 border rounded bg-red-600 hover:bg-red-700">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </form>
+                </tr>
                 {{#users}}
                 <tr>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -69,30 +120,28 @@
                         <p class="text-gray-900 whitespace-no-wrap">{{phone}}</p>
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        {{#if birthday}}
                         <p class="text-gray-900 whitespace-no-wrap">
                             {{formatDateTime birthday 'date'}}
                         </p>
+                        {{/if}}
                     </td>
-                    <!-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                            <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                            <span class="relative">Activo</span>
-                        </span>
-                    </td> 
-                
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <span class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-                            <span aria-hidden class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-                            <span class="relative">Suspended</span>
-                        </span>
+                        <div class="flex gap-1">
+                            <a href="/profile?userId={{_id}}">
+                                <button type="button"
+                                    class="flex items-center align-middle py-2 px-3 text-sm font-medium text-white border-blue-800 border rounded bg-blue-600 hover:bg-blue-700">
+                                    <i class="fa-solid fa-info"></i>
+                                </button>
+                            </a>
+                            <a href="/profile/delete/{{_id}}">
+                                <button type="button"
+                                    class="flex items-center align-middle p-2 text-sm font-medium text-white border-red-800 border rounded bg-red-600 hover:bg-red-700">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </a>
+                        </div>
                     </td>
-
-                    <td class="px-5 py-5 bg-white text-sm">
-                        <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                            <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                            <span class="relative">Inactive</span>
-                        </span>
-                    </td>-->
                 </tr>
                 {{/users}}
             </tbody>
@@ -116,7 +165,7 @@
         })
             .then((response) => {
                 if (response.ok) {
-                    window.location.reload();
+                    alert("Updated");
                 } else {
                     alert("Failed to submit update");
                 }
@@ -124,5 +173,10 @@
             .catch((error) => {
                 alert("Error submitting update:", error);
             });
+    }
+
+    function toggleCreateUser() {
+        const form = document.querySelector("#form-create-user");
+        form.classList.toggle('hidden')
     }
 </script>

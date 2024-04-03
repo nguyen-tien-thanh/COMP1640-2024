@@ -51,7 +51,7 @@ class ProfileController {
       const owner = await User.find({ _id: userId });
 
       if (
-        req.user.role.name !== "Administrator" ||
+        req.user.role.name !== "Administrator" &&
         owner._id !== req.user._id
       ) {
         return res.render("error", {
@@ -69,6 +69,20 @@ class ProfileController {
       req.flash("error", "Can't update right now");
       console.error(`Error updating: `, err);
       return res.status(404).send({ message: "Update failed" });
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      const userId = req.params.id;
+      await User.deleteOne({ _id: userId });
+
+      req.flash("success", "Delete successfully");
+      return res.redirect("back");
+    } catch (err) {
+      req.flash("error", "Can't delete right now");
+      console.error(`Error updating: `, err);
+      return res.redirect("back");
     }
   }
 }
