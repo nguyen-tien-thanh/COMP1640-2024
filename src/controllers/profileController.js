@@ -1,7 +1,8 @@
 const User = require("../models/User");
 const Contribution = require("../models/Contribution");
 const Comment = require("../models/Comment");
-
+const bcrypt = require("bcrypt");
+const Role = require("../models/Role");
 const { jsonToObject, multipleJsonToObject } = require("../utils/jsonToObject");
 
 class ProfileController {
@@ -82,6 +83,40 @@ class ProfileController {
     } catch (err) {
       req.flash("error", "Can't delete right now");
       console.error(`Error updating: `, err);
+      return res.redirect("back");
+    }
+  }
+
+  async create(req, res, next) {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      req.flash("error", "Missing information");
+      return res.redirect("back");
+    }
+
+    try {
+      const existingUser = await User.findOne({ email });
+
+      if (existingUser) {
+        req.flash("error", "Email already registered");
+        return res.redirect("back");
+      }
+
+      const hash = await bcrypt.hashSync(password, 10);
+
+      const user = new User({
+        ...req.body,
+        password: hash,
+      });
+
+      await user.save();
+      req.flash("success", "Successfully registered");
+      req.flash("email", email);
+
+      return res.redirect("back");
+    } catch (error) {
+      req.flash("error", "An error occurred. Try again later");
       return res.redirect("back");
     }
   }

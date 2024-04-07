@@ -6,6 +6,7 @@ const ProfileController = require("../controllers/profileController");
 
 router.get("/delete/:id", isAdmin, ProfileController.delete);
 router.post("/update/:id", ProfileController.update);
+router.post("/create", isAdmin, ProfileController.create);
 router.get("/", ProfileController.index);
 
 module.exports = router;

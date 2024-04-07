@@ -1,6 +1,4 @@
-const bcrypt = require("bcrypt");
 const User = require("../models/User");
-const Role = require("../models/Role");
 
 const passport = require("passport");
 
@@ -41,47 +39,6 @@ class HomeController {
         res.redirect("/");
       });
     })(req, res, next);
-  }
-
-  register(req, res, next) {
-    return res.render("Register", {
-      noHeader: true,
-      title: "Register",
-    });
-  }
-
-  async store(req, res, next) {
-    const { name, email, password } = req.body;
-
-    if (!name || !email || !password) {
-      req.flash("error", "Missing information");
-      return res.redirect("back");
-    }
-
-    try {
-      const existingUser = await User.findOne({ email });
-
-      if (existingUser) {
-        req.flash("error", "Email already registered");
-        return res.redirect("back");
-      }
-
-      const hash = bcrypt.hashSync(password, 10);
-
-      const user = new User({
-        ...req.body,
-        password: hash,
-      });
-
-      await user.save();
-      req.flash("success", "Successfully registered");
-      req.flash("email", email);
-
-      return res.redirect("back");
-    } catch (error) {
-      req.flash("error", "An error occurred. Try again later");
-      return res.redirect("back");
-    }
   }
 
   privacy(req, res, next) {
