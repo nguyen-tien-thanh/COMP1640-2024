@@ -1,9 +1,11 @@
 <div class="w-full">
+    {{#ifeq user.role.name 'Administrator'}}
     <button type="button" onclick="toggleCreateUser()"
         class="flex items-center p-3 text-sm font-medium text-white border-t border-green-800 rounded-b-lg bg-green-600 hover:bg-green-700">
         <i class="fa-solid fa-plus mr-2"></i>
         Create
     </button>
+    {{/ifeq}}
     <div class="bg-white overflow-auto">
         <table class="min-w-full leading-normal">
             <thead>
@@ -52,8 +54,7 @@
                             </div>
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                            <select id="select-{{_id}}" class="block w-fit border p-1 rounded"
-                                onchange="handleRoleChange('{{_id}}')" name="role">
+                            <select id="select-{{_id}}" class="block w-fit border p-1 rounded" name="role">
                                 {{#each roles}}
                                 <option value="{{_id}}">{{name}}</option>
                                 {{/each}}
@@ -85,7 +86,7 @@
                         </td>
                     </form>
                 </tr>
-                {{#users}}
+                {{#each (handleUserListByRole users user.role.name)}}
                 <tr>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <div class="flex items-center">
@@ -102,7 +103,8 @@
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <select id="select-{{_id}}" class="block w-fit border p-1 rounded"
                             onchange="handleRoleChange('{{_id}}')">
-                            {{#each ../roles}}
+                            <option disabled selected>Current role: <b class="font-bold">{{role.name}}</b></option>
+                            {{#each (limitRoleCanHandle ../roles ../user.role.name)}}
                             <option value="{{_id}}" {{#ifeq name ../role.name }} selected {{/ifeq}}>{{name}}</option>
                             {{/each}}
                         </select>
@@ -134,16 +136,18 @@
                                     <i class="fa-solid fa-info"></i>
                                 </button>
                             </a>
+                            {{#ifeq ../user.role.name 'Administrator'}}
                             <a href="/profile/delete/{{_id}}">
                                 <button type="button"
                                     class="flex items-center align-middle p-2 text-sm font-medium text-white border-red-800 border rounded bg-red-600 hover:bg-red-700">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </a>
+                            {{/ifeq}}
                         </div>
                     </td>
                 </tr>
-                {{/users}}
+                {{/each}}
             </tbody>
         </table>
     </div>

@@ -1,4 +1,48 @@
 module.exports = {
+  isManager: function (roleName, options) {
+    if (roleName === "Administrator" || roleName === "Marketing Manager") {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  limitRoleCanHandle: function (roles, userRole) {
+    if (userRole === "Administrator") {
+      return roles.filter((r) => {
+        return (
+          r.name.includes("Marketing Coordinator") ||
+          r.name.includes("Marketing Manager") ||
+          r.name.includes("Administrator")
+        );
+      });
+    } else {
+      return roles.filter((r) => {
+        return r.name.includes("Student") || r.name.includes("Guest");
+      });
+    }
+  },
+  handleUserListByRole: function (users, role) {
+    if (role === "Administrator") {
+      return users;
+    } else {
+      return users.filter((user) => {
+        return (
+          user.role.name.includes("Student") || user.role.name.includes("Guest")
+        );
+      });
+    }
+  },
+  canManagement: function (roleName, options) {
+    if (
+      roleName === "Administrator" ||
+      roleName === "Marketing Coordinator" ||
+      roleName === "Marketing Manager"
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  },
   isIncluded: function (arr, check) {
     return arr.some((a) => a._id.equals(check));
   },

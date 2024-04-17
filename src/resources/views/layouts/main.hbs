@@ -59,7 +59,8 @@
                         <a class="nav-link {{#ifeq title 'Faculty'}}active{{/ifeq}}" href="/faculty">Faculty</a>
                     </li>
                     {{/if}}
-                    {{#ifeq user.role.name "Administrator"}}<li>
+                    {{#ifeq (canManagement user.role.name) true}}
+                    <li>
                         <a class="nav-link {{#ifeq title 'Management'}}active{{/ifeq}}" href="/admin">Management</a>
                     </li>
                     {{/ifeq}}

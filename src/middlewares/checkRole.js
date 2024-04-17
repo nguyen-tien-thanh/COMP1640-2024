@@ -28,6 +28,18 @@ const isCoordinator = (req, res, next) => {
   }
 };
 
+const isStaff = (req, res, next) => {
+  if (
+    req.user.role.name === "Marketing Manager" ||
+    req.user.role.name === "Marketing Coordinator" ||
+    req.user.role.name === "Administrator"
+  ) {
+    return next();
+  } else {
+    renderForbidden(res);
+  }
+};
+
 const isStudent = (req, res, next) => {
   if (
     req.user.role.name === "Student" ||
@@ -48,4 +60,4 @@ const renderForbidden = (res) => {
   });
 };
 
-module.exports = { isAdmin, isManager, isCoordinator, isStudent };
+module.exports = { isAdmin, isManager, isCoordinator, isStudent, isStaff };
