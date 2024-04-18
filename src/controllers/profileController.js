@@ -55,13 +55,11 @@ class ProfileController {
 
       if (
         req.user.role.name !== "Administrator" &&
+        req.user.role.name !== "Marketing Coordinator" &&
         owner._id !== req.user._id
       ) {
-        return res.render("error", {
-          noHeader: true,
-          statusCode: 403,
-          message: "Forbidden. You are not allowed.",
-        });
+        req.flash("error", "Can't update right now");
+        return res.redirect("back");
       }
 
       await User.updateOne({ _id: userId }, { ...req.body });
