@@ -98,6 +98,7 @@ module.exports = {
     if (
       currentUser &&
       (currentUser.role.name === "Administrator" ||
+        currentUser.role.name === "Marketing Coordinator" ||
         currentUser.role.name === "Marketing Manager")
     ) {
       return cons;
