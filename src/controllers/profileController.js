@@ -77,6 +77,8 @@ class ProfileController {
     try {
       const userId = req.params.id;
       await User.deleteOne({ _id: userId });
+      await Comment.deleteMany({ user: userId });
+      await Contribution.deleteMany({ user: userId });
 
       req.flash("success", "Delete successfully");
       return res.redirect("back");

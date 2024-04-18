@@ -112,7 +112,9 @@ class AdminController {
 
       fs.mkdirSync("./temp");
       for (const contribution of contributions) {
-        const userFolderName = `${contribution._id} - ${contribution.user.name}`;
+        const userFolderName = `${contribution._id} - ${
+          contribution.user.name ? contribution.user.name : "-"
+        }`;
         const contributionFolder = path.join("./temp", userFolderName);
 
         const parentDirectory = path.dirname(contributionFolder);
