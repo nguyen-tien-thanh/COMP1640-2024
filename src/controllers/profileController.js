@@ -4,6 +4,8 @@ const Comment = require("../models/Comment");
 const bcrypt = require("bcrypt");
 const Role = require("../models/Role");
 const { jsonToObject, multipleJsonToObject } = require("../utils/jsonToObject");
+const { sendMailWithPassword } = require("../utils/sendMail");
+const generatePassword = require("../utils/generatePassword");
 
 class ProfileController {
   async index(req, res, next) {
@@ -88,7 +90,8 @@ class ProfileController {
   }
 
   async create(req, res, next) {
-    const { name, email, password } = req.body;
+    const { name, email } = req.body;
+    const password = generatePassword();
 
     if (!name || !email || !password) {
       req.flash("error", "Missing information");
@@ -111,6 +114,12 @@ class ProfileController {
       });
 
       await user.save();
+
+      sendMailWithPassword({
+        email: user.email,
+        password,
+      });
+
       req.flash("success", "Successfully registered");
       req.flash("email", email);
 

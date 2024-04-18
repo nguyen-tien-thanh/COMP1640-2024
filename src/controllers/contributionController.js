@@ -4,7 +4,7 @@ const Faculty = require("../models/Faculty");
 const Contribution = require("../models/Contribution");
 
 const { multipleJsonToObject, jsonToObject } = require("../utils/jsonToObject");
-const sendMail = require("../utils/sendMail");
+const { sendMail } = require("../utils/sendMail");
 
 class ContributionController {
   async public(req, res, next) {
@@ -190,7 +190,6 @@ class ContributionController {
         user: req.user._id,
         files: filesName,
       });
-
       await contribution.save();
 
       const faculty = await Faculty.findOne({

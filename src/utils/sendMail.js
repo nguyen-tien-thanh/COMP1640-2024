@@ -41,4 +41,29 @@ const sendMail = (receiver, faculty, contribution) => {
   });
 };
 
-module.exports = sendMail;
+const sendMailWithPassword = (data) => {
+  console.log(data);
+  const mail = {
+    from: {
+      name: "COMP1640",
+      address: process.env.MAIL_ADDRESS,
+    },
+    to: data.email,
+    subject: "Your account have been created in COMP1640",
+    html: `<p>Email: <b>${data.email}</b></p>
+    <p>Password: <b>${data.password}</b></p>
+    <br>
+    <p>Please update information after login.</p>
+    `,
+  };
+
+  transport.sendMail(mail, (err, info) => {
+    if (err) {
+      console.error(`Error: ${err.message}`);
+    } else {
+      console.info(`Response: ${info}`);
+    }
+  });
+};
+
+module.exports = { sendMail, sendMailWithPassword };
