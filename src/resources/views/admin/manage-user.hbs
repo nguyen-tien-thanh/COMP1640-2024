@@ -1,11 +1,9 @@
 <div class="w-full">
-    {{#ifeq user.role.name 'Administrator'}}
     <button type="button" onclick="toggleCreateUser()"
         class="flex items-center p-3 text-sm font-medium text-white border-t border-green-800 rounded-b-lg bg-green-600 hover:bg-green-700">
         <i class="fa-solid fa-plus mr-2"></i>
         Create
     </button>
-    {{/ifeq}}
     <div class="bg-white overflow-auto">
         <table class="min-w-full leading-normal">
             <thead>
@@ -55,7 +53,7 @@
                         </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                             <select id="select-{{_id}}" class="block w-fit border p-1 rounded" name="role">
-                                {{#each roles}}
+                                {{#each (limitRoleCanHandle ./roles ./user.role.name)}}
                                 <option value="{{_id}}">{{name}}</option>
                                 {{/each}}
                             </select>
