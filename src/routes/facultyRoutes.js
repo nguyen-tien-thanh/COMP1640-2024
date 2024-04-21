@@ -3,10 +3,14 @@ const router = express.Router();
 
 const FacultyController = require("../controllers/facultyController");
 const { upload } = require("../middlewares/updateMulter");
-const { isAdmin, isManager } = require("../middlewares/checkRole");
+const {
+  isAdmin,
+  isManager,
+  isCoordinator,
+} = require("../middlewares/checkRole");
 
 router.get("/delete/:id", isAdmin, FacultyController.delete);
-router.post("/update/:id", isAdmin, FacultyController.update);
+router.post("/update/:id", isCoordinator, FacultyController.update);
 router.post(
   "/store",
   upload.single("image"),

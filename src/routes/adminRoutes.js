@@ -15,7 +15,7 @@ router.get(
   isManager,
   AdminController.manageContribution
 );
-router.get("/manage-faculty", isAdmin, AdminController.manageFaculty);
+router.get("/manage-faculty", isCoordinator, AdminController.manageFaculty);
 router.get("/manage-user", isCoordinator, AdminController.manageUser);
 router.get("/", isStaff, AdminController.index);
 

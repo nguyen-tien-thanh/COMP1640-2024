@@ -6,6 +6,29 @@ module.exports = {
       return false;
     }
   },
+  isCoordinator: function (roleName, options) {
+    if (roleName === "Administrator" || roleName === "Marketing Coordinator") {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  limitFacultyCanHandle: function (faculties, user) {
+    if (user.role && user.role.name === "Administrator") {
+      return faculties;
+    } else if (user.role && user.role.name === "Marketing Coordinator") {
+      return faculties.filter((fac) => {
+        return (
+          fac.coordinator &&
+          fac.coordinator.name &&
+          fac.coordinator.name.includes(user.name)
+        );
+      });
+    } else {
+      return [];
+    }
+  },
+
   limitRoleCanHandle: function (roles, userRole) {
     if (userRole === "Administrator") {
       return roles.filter((r) => {

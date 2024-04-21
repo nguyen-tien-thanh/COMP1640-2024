@@ -1,10 +1,12 @@
 <div class="w-full">
+    {{#ifeq user.role.name 'Administrator'}}
     <button type="button" onclick="toggleCreateFaculty()"
         class="flex items-center p-3 text-sm font-medium text-white border-t border-green-800 rounded-b-lg bg-green-600 hover:bg-green-700">
         <i class="fa-solid fa-plus mr-2"></i>
         Create
     </button>
-    <div class="bg-white overflow-auto">
+    {{/ifeq}}
+    <div class="bg-white">
         <table class="min-w-full leading-normal">
             <thead>
                 <tr>
@@ -127,7 +129,7 @@
                         </td>
                     </form>
                 </tr>
-                {{#faculties}}
+                {{#each (limitFacultyCanHandle faculties user)}}
                 <tr>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <div class="flex items-center">
@@ -144,7 +146,8 @@
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <!-- <p class="text-gray-900 whitespace-no-wrap">{{coordinator.name}}</p> -->
                         <select id="select-coordinator-{{_id}}" class="block w-fit border p-2 rounded"
-                            onchange="handleCoordinatorChange('{{_id}}')">
+                            onchange="handleCoordinatorChange('{{_id}}')" {{#ifeq
+                            ../user.role.name 'Marketing Coordinator' }}disabled{{/ifeq}}>
                             {{#each ../users}}
                             {{#ifeq role.name 'Marketing Coordinator'}}
                             <option value="{{_id}}" {{#ifeq name ../coordinator.name }} selected {{/ifeq}}>{{name}}
@@ -163,7 +166,7 @@
                             <form action="/faculty/update/{{_id}}" method="post">
                                 <ul class="p-3 overflow-y-auto text-sm text-gray-700"
                                     aria-labelledby="btn-dropdown-{{_id}}">
-                                    {{#each ../users}}
+                                    {{#each (handleUserListByRole ../users ../user.role.name)}}
                                     <li>
                                         <div class="flex items-center p-2 rounded hover:bg-gray-100">
                                             <input id="checkbox-{{_id}}" type="checkbox" name="users" value="{{_id}}"
@@ -215,16 +218,18 @@
                                     <i class="fa-solid fa-info"></i>
                                 </button>
                             </a>
+                            {{#ifeq ../user.role.name 'Administrator'}}
                             <a href="/faculty/delete/{{_id}}">
                                 <button type="button"
                                     class="flex items-center align-middle p-2 text-sm font-medium text-white border-red-800 border rounded bg-red-600 hover:bg-red-700">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </a>
+                            {{/ifeq}}
                         </div>
                     </td>
                 </tr>
-                {{/faculties}}
+                {{/each}}
             </tbody>
         </table>
     </div>

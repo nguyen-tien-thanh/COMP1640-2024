@@ -1,9 +1,11 @@
 <div class="w-full">
+    {{#ifeq (isCoordinator user.role.name) true}}
     <button type="button" onclick="toggleCreateUser()"
         class="flex items-center p-3 text-sm font-medium text-white border-t border-green-800 rounded-b-lg bg-green-600 hover:bg-green-700">
         <i class="fa-solid fa-plus mr-2"></i>
         Create
     </button>
+    {{/ifeq}}
     <div class="bg-white overflow-auto">
         <table class="min-w-full leading-normal">
             <thead>
