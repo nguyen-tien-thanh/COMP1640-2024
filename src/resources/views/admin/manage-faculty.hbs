@@ -6,10 +6,14 @@
         Create
     </button>
     {{/ifeq}}
-    <div class="bg-white">
+    <div class="bg-white overflow-x-auto">
         <table class="min-w-full leading-normal">
             <thead>
                 <tr>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Academic Year
+                    </th>
                     <th
                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Faculty
@@ -47,6 +51,14 @@
             <tbody>
                 <tr id="form-create-faculty" class="hidden">
                     <form action="/faculty/store" method="post" enctype="multipart/form-data">
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <select class="block w-fit border p-2 rounded" name="academicYear" required>
+                                {{#each academicYears}}
+                                <option value="{{_id}}">{{this.year}}
+                                </option>
+                                {{/each}}
+                            </select>
+                        </td>
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                             <div class="flex items-center">
                                 <div
@@ -118,11 +130,11 @@
                         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                             <div class="flex gap-1">
                                 <button type="submit"
-                                    class="flex items-center align-middle py-2 px-3 text-sm font-medium text-white border-green-800 border rounded bg-green-600 hover:bg-green-700">
+                                    class="flex items-center align-middle py-2 px-2 text-sm font-medium text-white border-green-800 border rounded bg-green-600 hover:bg-green-700">
                                     <i class="fa-solid fa-floppy-disk"></i>
                                 </button>
                                 <button type="button" onclick="toggleCreateFaculty()"
-                                    class="flex items-center align-middle py-2 px-3 text-sm font-medium text-white border-red-800 border rounded bg-red-600 hover:bg-red-700">
+                                    class="flex items-center align-middle py-2 px-2 text-sm font-medium text-white border-red-800 border rounded bg-red-600 hover:bg-red-700">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -131,6 +143,11 @@
                 </tr>
                 {{#each (limitFacultyCanHandle faculties user)}}
                 <tr>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">
+                            {{academicYear.year}}
+                        </p>
+                    </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 w-10 h-10">

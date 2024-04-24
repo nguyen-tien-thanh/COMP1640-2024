@@ -64,7 +64,9 @@ class AdminController {
       const faculties = await Faculty.find({})
         .populate({ path: "coordinator", select: "_id name" })
         .populate({ path: "users", select: "_id name" })
+        .populate({ path: "academicYear", select: "_id year" })
         .sort({ createdAt: -1 });
+      const academicYears = await AcademicYear.find({}).sort({ year: -1 });
 
       return res.render("admin/manage-faculty", {
         layout: "adminLayout",
@@ -72,6 +74,7 @@ class AdminController {
         noHeader: true,
         users: multipleJsonToObject(users),
         faculties: multipleJsonToObject(faculties),
+        academicYears: multipleJsonToObject(academicYears),
       });
     } catch (err) {
       console.error(err);
@@ -102,7 +105,7 @@ class AdminController {
 
   async manageAcademicYear(req, res, next) {
     try {
-      const academicYear = await AcademicYear.find({});
+      const academicYear = await AcademicYear.find({}).sort({ year: -1 });
 
       return res.render("admin/manage-academic-year", {
         layout: "adminLayout",

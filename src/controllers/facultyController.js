@@ -1,20 +1,23 @@
 const Faculty = require("../models/Faculty");
+const AcademicYear = require("../models/AcademicYear");
 const { multipleJsonToObject } = require("../utils/jsonToObject");
 
 class FacultyController {
-  index(req, res, next) {
+  async index(req, res, next) {
     try {
-      Faculty.find({})
+      const fal = await Faculty.find({})
         .sort()
         .populate("users")
-        .populate("coordinator")
-        .then((fal) => {
-          return res.render("faculty", {
-            noBanner: true,
-            title: "Faculty",
-            faculties: multipleJsonToObject(fal),
-          });
-        });
+        .populate("coordinator");
+
+      const year = await AcademicYear.find({}).sort({ year: -1 });
+
+      return res.render("faculty", {
+        noBanner: true,
+        title: "Faculty",
+        faculties: multipleJsonToObject(fal),
+        academicYears: multipleJsonToObject(year),
+      });
     } catch (err) {
       console.error(err);
       return res.render("error", {
