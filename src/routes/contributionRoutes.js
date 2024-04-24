@@ -5,6 +5,8 @@ const ContributionController = require("../controllers/contributionController");
 const { handleFileUpload } = require("../middlewares/updateMulter");
 const { isCoordinator } = require("../middlewares/checkRole");
 
+router.get("/reject/:id", isCoordinator, ContributionController.reject);
+router.get("/approve/:id", isCoordinator, ContributionController.approve);
 router.post("/update/:id", ContributionController.update);
 router.get("/unPublic/:id", isCoordinator, ContributionController.unPublic);
 router.get("/public/:id", isCoordinator, ContributionController.public);

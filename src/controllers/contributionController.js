@@ -244,6 +244,32 @@ class ContributionController {
       return res.status(404).send({ message: "Update failed" });
     }
   }
+
+  async approve(req, res) {
+    try {
+      await Contribution.updateOne(
+        { _id: req.params.id },
+        { status: "Approved" }
+      );
+      req.flash("success", "Contribution approved");
+    } catch (err) {
+      console.error(err);
+    }
+    return res.redirect("back");
+  }
+
+  async reject(req, res) {
+    try {
+      await Contribution.updateOne(
+        { _id: req.params.id },
+        { status: "Rejected" }
+      );
+      req.flash("success", "Contribution rejected");
+    } catch (err) {
+      console.error(err);
+    }
+    return res.redirect("back");
+  }
 }
 
 module.exports = new ContributionController();

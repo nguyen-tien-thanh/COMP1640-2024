@@ -99,6 +99,14 @@
                                 <span
                                     class="sm:ml-2 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Published</span>
                                 {{/ifeq}}
+                                {{#ifeq status 'Approved'}}
+                                <span
+                                    class="sm:ml-2 bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Approved</span>
+                                {{/ifeq}}
+                                {{#ifeq status 'Rejected'}}
+                                <span
+                                    class="sm:ml-2 bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Rejected</span>
+                                {{/ifeq}}
                                 {{#ifNotEqDate createdAt updatedAt}}
                                 <span
                                     class="sm:ml-2 bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">Updated</span>
@@ -190,6 +198,25 @@
                         {{/if}}
                         {{/files}}
                     </div>
+
+                    {{#ifeq ../user.role.name 'Marketing Coordinator'}}
+                    {{#ifeq status 'Pending'}}
+                    <div class="flex items-center mt-4 space-x-4">
+                        <a href="/contribution/approve/{{_id}}">
+                            <button type="button"
+                                class="flex items-center border px-2 py-1 rounded font-medium text-sm bg-green-200 text-green-600 hover:scale-105 active:scale-110 transition-all duration-300">
+                                Approved
+                            </button>
+                        </a>
+                        <a href="/contribution/reject/{{_id}}">
+                            <button type="button"
+                                class="flex items-center border px-2 py-1 rounded font-medium text-sm bg-red-200 text-red-900 hover:scale-105 active:scale-110 transition-all duration-300">
+                                Rejected
+                            </button>
+                        </a>
+                    </div>
+                    {{/ifeq}}
+                    {{/ifeq}}
 
                     <div class="flex items-center mt-4 space-x-4" onClick="toggleComment('{{_id}}')">
                         <button type="button"

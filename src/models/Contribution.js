@@ -8,6 +8,7 @@ const Contribution = new mongoose.Schema(
     content: { type: String, maxLength: 255, required: true },
     files: [{ type: String }],
     isPublished: { type: Boolean, default: false, require: true },
+    status: { type: String, default: "Pending", require: true },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   },
   {
