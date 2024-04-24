@@ -6,9 +6,11 @@ const commentRoutes = require("./commentRoutes");
 const publicationRoutes = require("./publicationRoutes");
 const profileRoutes = require("./profileRoutes");
 const adminRoutes = require("./adminRoutes");
+const academicYearRoutes = require("./academicYearRoutes");
 
 const flashMessage = require("../middlewares/flashMessage");
 const checkLogin = require("../middlewares/checkLogin");
+const { isAdmin } = require("../middlewares/checkRole");
 
 function route(app) {
   app.use(flashMessage);
@@ -22,6 +24,7 @@ function route(app) {
     next();
   });
 
+  app.use("/academic-year", checkLogin, isAdmin, academicYearRoutes);
   app.use("/admin", checkLogin, adminRoutes);
   app.use("/profile", checkLogin, profileRoutes);
   app.use("/publication", checkLogin, publicationRoutes);

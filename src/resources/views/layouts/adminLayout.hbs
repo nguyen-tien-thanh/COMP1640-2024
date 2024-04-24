@@ -86,6 +86,13 @@
                 Contributions
             </a>
             {{/ifeq}}
+            {{#ifeq user.role.name 'Administrator'}}
+            <a href="/admin/manage-academic-year"
+                class="flex items-center {{#ifeq title 'Academic year'}}active-nav-link{{else}}opacity-75 hover:opacity-100{{/ifeq}} text-white py-4 pl-6 nav-item">
+                <i class="fas fa-calendar mr-3"></i>
+                Academic year
+            </a>
+            {{/ifeq}}
         </nav>
     </aside>
 

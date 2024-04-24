@@ -3,6 +3,11 @@ const mongooseDelete = require("mongoose-delete");
 
 const Faculty = new mongoose.Schema(
   {
+    academicYear: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "AcademicYear",
+      required: true,
+    },
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     coordinator: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     name: { type: String, maxLength: 255, required: true },

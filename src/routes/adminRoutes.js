@@ -17,6 +17,11 @@ router.get(
 );
 router.get("/manage-faculty", isCoordinator, AdminController.manageFaculty);
 router.get("/manage-user", isCoordinator, AdminController.manageUser);
+router.get(
+  "/manage-academic-year",
+  isAdmin,
+  AdminController.manageAcademicYear
+);
 router.get("/", isStaff, AdminController.index);
 
 module.exports = router;

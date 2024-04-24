@@ -8,6 +8,7 @@ const User = require("../models/User");
 const Contribution = require("../models/Contribution");
 const Role = require("../models/Role");
 const Faculty = require("../models/Faculty");
+const AcademicYear = require("../models/AcademicYear");
 
 const { jsonToObject, multipleJsonToObject } = require("../utils/jsonToObject");
 
@@ -91,6 +92,23 @@ class AdminController {
         title: "Contributions Management",
         noHeader: true,
         contributions: multipleJsonToObject(contributions),
+      });
+    } catch (err) {
+      console.error(err);
+      req.flash("error", "Internal server error");
+      return res.redirect("back");
+    }
+  }
+
+  async manageAcademicYear(req, res, next) {
+    try {
+      const academicYear = await AcademicYear.find({});
+
+      return res.render("admin/manage-academic-year", {
+        layout: "adminLayout",
+        title: "Academic year",
+        noHeader: true,
+        academicYear: multipleJsonToObject(academicYear),
       });
     } catch (err) {
       console.error(err);

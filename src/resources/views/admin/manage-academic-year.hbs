@@ -1,0 +1,93 @@
+<div class="w-full">
+    {{#ifeq user.role.name 'Administrator'}}
+    <button type="button" onclick="toggleCreateFaculty()"
+        class="flex items-center p-3 text-sm font-medium text-white border-t border-green-800 rounded-b-lg bg-green-600 hover:bg-green-700">
+        <i class="fa-solid fa-plus mr-2"></i>
+        Create
+    </button>
+    {{/ifeq}}
+    <div class="bg-white">
+        <table class="min-w-full leading-normal">
+            <thead>
+                <tr>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Year
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Start date
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        End date
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="form-create-year" class="hidden">
+                    <form action="/academic-year/create" method="post">
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex items-center">
+                                <input type="text" name="year" id="" class="p-2 border rounded focus:outline-none"
+                                    placeholder="Academic Year *" autofocus required>
+                            </div>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <input type="date" name="startDate" required>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <input type="date" name="endDate" required>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <div class="flex gap-1">
+                                <button type="submit"
+                                    class="flex items-center align-middle py-2 px-3 text-sm font-medium text-white border-green-800 border rounded bg-green-600 hover:bg-green-700">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                </button>
+                                <button type="button" onclick="toggleCreateFaculty()"
+                                    class="flex items-center align-middle py-2 px-3 text-sm font-medium text-white border-red-800 border rounded bg-red-600 hover:bg-red-700">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </form>
+                </tr>
+                {{#each academicYear}}
+                <tr>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{year}}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{formatDateTime startDate 'date'}}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{formatDateTime endDate 'date'}}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <div class="flex gap-1">
+                            <a href="/academic-year/delete/{{_id}}">
+                                <button type="button"
+                                    class="flex items-center align-middle p-2 text-sm font-medium text-white border-red-800 border rounded bg-red-600 hover:bg-red-700">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function toggleCreateFaculty() {
+        const form = document.querySelector("#form-create-year");
+        form.classList.toggle('hidden')
+    }
+</script>
