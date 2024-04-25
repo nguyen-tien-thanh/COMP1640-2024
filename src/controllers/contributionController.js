@@ -270,6 +270,16 @@ class ContributionController {
     }
     return res.redirect("back");
   }
+
+  async patch(req, res) {
+    try {
+      await Contribution.updateOne({ _id: req.params.id }, { ...req.body });
+      req.flash("success", "Contribution updated");
+    } catch (err) {
+      console.error(err);
+    }
+    return res.redirect("back");
+  }
 }
 
 module.exports = new ContributionController();

@@ -121,14 +121,24 @@ module.exports = {
     if (
       currentUser &&
       (currentUser.role.name === "Administrator" ||
-        currentUser.role.name === "Marketing Coordinator" ||
         currentUser.role.name === "Marketing Manager")
     ) {
       return cons;
     }
-    const result = cons.filter((con) => {
-      return con.faculty.users.some((id) => id.equals(currentUser._id));
-    });
+
+    var result;
+
+    if (currentUser.role.name === "Guest") {
+      result = cons.filter((con) => {
+        return con.faculty.users.some(
+          (id) => id.equals(currentUser._id) && con.isForGuest === true
+        );
+      });
+    } else {
+      result = cons.filter((con) => {
+        return con.faculty.users.some((id) => id.equals(currentUser._id));
+      });
+    }
     return result;
   },
   canSeeFaculties: function (faculties, currentUser) {

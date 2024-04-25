@@ -1,4 +1,5 @@
 <div class="w-full">
+    {{#ifeq user.role.name 'Admin'}}
     <a href="/admin/download">
         <button type="button"
             class="flex items-center p-3 text-sm font-medium text-white border-t border-green-800 rounded-b-lg bg-green-600 hover:bg-green-700">
@@ -6,6 +7,7 @@
             Download
         </button>
     </a>
+    {{/ifeq}}
     <div class="bg-white overflow-auto">
         <table class="min-w-full leading-normal">
             <thead>
@@ -28,6 +30,10 @@
                     </th>
                     <th
                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Is for Guest
+                    </th>
+                    <th
+                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Status
                     </th>
                     <th
@@ -45,7 +51,7 @@
                 </tr>
             </thead>
             <tbody>
-                {{#contributions}}
+                {{#each (canSeeContributions contributions user)}}
                 <tr>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <p class="text-gray-900 whitespace-no-wrap">
@@ -79,6 +85,13 @@
                             {{/if}}
                             {{/files}}
                         </div>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <select id="select-{{_id}}" class="block w-fit border p-1 rounded"
+                            onchange="handleIsForGuestChange('{{_id}}')">
+                            <option value="false" {{#ifeq isForGuest false }} selected {{/ifeq}}>False</option>
+                            <option value="true" {{#ifeq isForGuest true }} selected {{/ifeq}}>True</option>
+                        </select>
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         {{#ifeq status 'Pending'}}
@@ -125,8 +138,35 @@
                         </div>
                     </td>
                 </tr>
-                {{/contributions}}
+                {{/each}}
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    function handleIsForGuestChange(id) {
+        const isForGuestElement = document.getElementById(`select-${id}`);
+        const value = isForGuestElement.value;
+
+        fetch(`/contribution/patch/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                isForGuest: value
+            }),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    alert("Updated");
+                } else {
+                    alert("Failed to submit update");
+                }
+            })
+            .catch((error) => {
+                alert("Error submitting update:", error);
+            });
+    }
+</script>

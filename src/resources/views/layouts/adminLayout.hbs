@@ -79,13 +79,11 @@
                 Faculties
             </a>
             {{/ifeq}}
-            {{#ifeq (isManager user.role.name) true}}
             <a href="/admin/manage-contribution"
                 class="flex items-center {{#ifeq title 'Contributions Management'}}active-nav-link{{else}}opacity-75 hover:opacity-100{{/ifeq}} text-white py-4 pl-6 nav-item">
                 <i class="fas fa-sticky-note mr-3"></i>
                 Contributions
             </a>
-            {{/ifeq}}
             {{#ifeq user.role.name 'Administrator'}}
             <a href="/admin/manage-academic-year"
                 class="flex items-center {{#ifeq title 'Academic year'}}active-nav-link{{else}}opacity-75 hover:opacity-100{{/ifeq}} text-white py-4 pl-6 nav-item">
@@ -99,7 +97,7 @@
     <div class="w-full flex flex-col h-screen overflow-y-hidden">
         <!-- Desktop Header -->
         <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
-            <div class="w-1/2"></div>
+            <div class="w-1/2 cursor-default">{{user.name}} | {{user.email}} | {{user.role.name}}</div>
             <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
                 <button @click="isOpen = !isOpen"
                     class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-gray-400 hover:border-gray-300 focus:border-gray-300 focus:outline-none">

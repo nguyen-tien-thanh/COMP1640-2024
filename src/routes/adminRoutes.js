@@ -10,11 +10,7 @@ const {
 } = require("../middlewares/checkRole");
 
 router.get("/download", isManager, AdminController.download);
-router.get(
-  "/manage-contribution",
-  isManager,
-  AdminController.manageContribution
-);
+router.get("/manage-contribution", isStaff, AdminController.manageContribution);
 router.get("/manage-faculty", isCoordinator, AdminController.manageFaculty);
 router.get("/manage-user", isCoordinator, AdminController.manageUser);
 router.get(

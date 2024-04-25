@@ -86,7 +86,7 @@ class AdminController {
   async manageContribution(req, res, next) {
     try {
       const contributions = await Contribution.find({})
-        .populate({ path: "faculty", select: "_id name" })
+        .populate({ path: "faculty", select: "_id name users" })
         .populate({ path: "user", select: "_id name" })
         .sort({ createdAt: -1 });
 

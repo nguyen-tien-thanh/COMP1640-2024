@@ -41,6 +41,7 @@
     }
     var faculties = parse('{{jsonParse faculties}}')
     var contributions = parse('{{jsonParse contributions}}')
+    // TODO: Coor just see theirs contribution
 
     var chartOneLabels = faculties.map(fal => fal.name);
     var chartOneDatasets = chartOneLabels.map(falName => {
