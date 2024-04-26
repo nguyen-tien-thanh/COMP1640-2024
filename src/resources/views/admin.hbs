@@ -1,5 +1,5 @@
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-2 mt-6">
-    <div class="lg:pr-2">
+<div class="grid grid-cols-1 {{#ifNotEq user.role.name 'Marketing Coordinator'}}lg:grid-cols-2{{/ifNotEq}} gap-2 mt-6">
+    <div class="{{#ifeq user.role.name 'Marketing Coordinator'}}hidden{{/ifeq}} lg:pl-2">
         <p class="text-xl py-3 flex items-center">
             Contributions per faculty
         </p>
@@ -12,10 +12,11 @@
             Contributions per months
         </p>
         <div class="p-6 bg-white">
-            <canvas id="chartTwo" width="400" height="200"></canvas>
+            <canvas id="chartTwo" width="400" {{#ifeq user.role.name 'Marketing Coordinator' }}height="130"
+                {{else}}height="200" {{/ifeq}}></canvas>
         </div>
     </div>
-    <div class="lg:pl-2">
+    <div class="{{#ifeq user.role.name 'Marketing Coordinator'}}hidden{{/ifeq}} lg:pl-2">
         <p class="text-xl py-3 flex items-center">
             Most contributions published by Faculty
         </p>
@@ -23,7 +24,7 @@
             <canvas id="chartThree" width="400" height="200"></canvas>
         </div>
     </div>
-    <div class="lg:pl-2">
+    <div class="{{#ifeq user.role.name 'Marketing Coordinator'}}hidden{{/ifeq}} lg:pl-2">
         <p class="text-xl py-3 flex items-center">
             Most contributions published by user
         </p>
@@ -41,7 +42,13 @@
     }
     var faculties = parse('{{jsonParse faculties}}')
     var contributions = parse('{{jsonParse contributions}}')
-    // TODO: Coor just see theirs contribution
+
+    // Filter contributions/faculty by coordinator
+    if ('{{user.role.name}}' === 'Marketing Coordinator') {
+        contributions = contributions.filter(con => {
+            return con.faculty.coordinator === '{{user._id}}'
+        })
+    }
 
     var chartOneLabels = faculties.map(fal => fal.name);
     var chartOneDatasets = chartOneLabels.map(falName => {
